@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@keyframes sparkle {
+  0%, 100% { text-shadow: 0 0 0px #F5CB5C; }
+  50%      { text-shadow: 0 0 12px #F5CB5C; }
+}
+.logo-sparkle {
+  animation: sparkle 4s ease-in-out infinite;
+}
+
+@keyframes navHover {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-2px); }
+  100% { transform: translateY(0); }
+}
+.nav-hover:hover {
+  animation: navHover 0.4s ease;
+}
+
