@@ -1,0 +1,44 @@
+/* Base style shared by all orbs */
+.orb {
+  position: absolute;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* Individual orbs with distinct motion paths & durations */
+.orb1 {
+  top: 20%;
+  left: 10%;
+  animation: float1 18s infinite alternate;
+}
+
+.orb2 {
+  top: 60%;
+  left: 70%;
+  animation: float2 14s infinite alternate;
+}
+
+.orb3 {
+  top: 40%;
+  left: 40%;
+  animation: float3 22s infinite alternate;
+}
+
+/* Keyframes for gentle drifting motion */
+@keyframes float1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(60px, -40px) scale(1.1); }
+  100% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+@keyframes float2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-70px, 30px) scale(1.05); }
+  100% { transform: translate(20px, -20px) scale(1); }
+}
+
+@keyframes float3 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(40px, -50px) scale(1.1); }
+  100% { transform: translate(-30px, 30px) scale(0.9); }
+}
