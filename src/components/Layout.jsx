@@ -34,7 +34,7 @@ export default function Layout() {
     }
   `}</style>
 
-      {/* background beams + rising particles */}
+      
       <div className="fixed inset-0 pointer-events-none">
         {Array.from({ length: 6 }).map((_, i) => (
           <div
@@ -49,8 +49,7 @@ export default function Layout() {
         ))}
 
         {Array.from({ length: 40 }).map((_, i) => {
-          const duration = 8 + Math.random() * 8; // 8–16s per particle
-          // Negative delay puts the animation part-way through its cycle on load
+          const duration = 8 + Math.random() * 8; 
           const negativeDelay = -(Math.random() * duration);
           return (
             <div
@@ -79,7 +78,7 @@ export default function Layout() {
             className={`flex items-center justify-between transition-all duration-300
               ${isScrolled ? "h-14" : "h-16"} md:h-20`}
           >
-            {/* Logo (use Link) */}
+           
             <Link
               to="/"
               className="relative text-2xl font-extrabold tracking-wide text-[#F5CB5C] logo-sparkle hover:scale-110 transition-transform"
@@ -94,7 +93,7 @@ export default function Layout() {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  end={item.to === "/"} // ensure exact match for home
+                  end={item.to === "/"} 
                   className={({ isActive }) =>
                     `relative nav-hover px-4 py-2 text-sm font-medium transition-colors duration-300 group ${
                       isActive
@@ -123,7 +122,7 @@ export default function Layout() {
               </button>
             </nav>
 
-            {/* Mobile toggle */}
+           
             <button
               onClick={() => setIsMobileMenuOpen((s) => !s)}
               className="md:hidden px-4 py-2 text-[#E8EDDF] hover:text-[#F5CB5C] transition-transform duration-300"
@@ -157,7 +156,7 @@ export default function Layout() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        
         <div
           className={`md:hidden origin-top transform transition-all duration-500 ease-in-out 
     ${

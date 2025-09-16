@@ -10,6 +10,7 @@ import {
   Mail,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import SkillsGrid from "../components/Skills";
 
 const About = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -43,7 +44,7 @@ const About = () => {
   return (
     <section className="relative py-16 px-4 sm:px-6 lg:px-12 text-[#E8EDDF]">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
+        
         <div
           className={`text-center mb-12 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -58,7 +59,7 @@ const About = () => {
             <span className="text-[#F5CB5C]">innovative solutions</span>.
           </p>
 
-          {/* Contact Links */}
+          
           <div className="flex flex-wrap justify-center gap-4 mt-6">
             {[
               {
@@ -91,7 +92,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* Stats */}
+      
         <div
           className={`grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 mb-12 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -118,7 +119,7 @@ const About = () => {
           })}
         </div>
 
-        {/* About Me */}
+       
         <div
           className={`bg-[#111111]/60 border border-[#CFDBD5]/20 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-10 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -156,7 +157,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* Highlights */}
+        
         <div
           className={`grid sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -192,7 +193,9 @@ const About = () => {
           })}
         </div>
 
-        {/* Call to Action */}
+        <SkillsGrid />
+
+        
         <div
           className={`text-center mt-12 sm:mt-16 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
