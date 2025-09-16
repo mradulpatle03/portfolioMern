@@ -2,14 +2,14 @@ import { Github, Linkedin, Twitter, Mail } from "lucide-react"; // npm install l
 
 export default function Footer() {
   const socials = [
-    { name: "GitHub", href: "https://github.com/yourname", Icon: Github },
+    { name: "GitHub", href: "https://github.com/mradulpatle03", Icon: Github },
     {
       name: "LinkedIn",
-      href: "https://linkedin.com/in/yourname",
+      href: "https://www.linkedin.com/in/mradul-patle-5207b52a7/",
       Icon: Linkedin,
     },
-    { name: "Twitter", href: "https://twitter.com/yourname", Icon: Twitter },
-    { name: "Email", href: "mailto:you@example.com", Icon: Mail },
+    { name: "Twitter", href: "", Icon: Twitter },
+    { name: "Email", href: "mailto:mradulwork1316@gmail.com", Icon: Mail },
   ];
 
   return (

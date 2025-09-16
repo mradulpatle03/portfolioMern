@@ -84,7 +84,7 @@ export default function Layout() {
               to="/"
               className="relative text-2xl font-extrabold tracking-wide text-[#F5CB5C] logo-sparkle hover:scale-110 transition-transform"
             >
-              MyPortfolio
+              <span className="text-white">i'm</span>Mradul
               <span className="absolute inset-0 rounded-full blur-md bg-[#F5CB5C]/20 opacity-0 hover:opacity-100 transition-opacity duration-300" />
             </Link>
 
