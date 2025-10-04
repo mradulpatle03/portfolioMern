@@ -42,57 +42,75 @@ const About = () => {
   ];
 
   return (
-    <section className="relative py-16 px-4 sm:px-6 lg:px-12 text-[#E8EDDF]">
+    <section className="relative py-16 px-4 sm:px-6 lg:px-12 text-[#E8EDDF] pt-30">
       <div className="max-w-6xl mx-auto">
-        
-        <div
-          className={`text-center mb-12 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
-        >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#F5CB5C] mb-4">
-            Mradul Patle
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl text-[#CFDBD5]/80 max-w-3xl mx-auto leading-relaxed">
-            Full-Stack Developer & Problem Solver passionate about creating{" "}
-            <span className="text-[#F5CB5C]">scalable products</span> and{" "}
-            <span className="text-[#F5CB5C]">innovative solutions</span>.
-          </p>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 mb-8">
+          <div className="flex flex-col-reverse items-center gap-8 sm:gap-10 md:flex-row md:items-center md:justify-between">
+            {/* Left: Text block */}
+            <div
+              className={`w-full min-w-0 text-center md:text-left transition-all duration-700 ${
+                isVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-10"
+              }`}
+            >
+              <h1 className="mb-3 text-4xl font-extrabold text-[#F5CB5C] sm:text-5xl md:text-6xl">
+                Mradul Patle
+              </h1>
 
-          
-          <div className="flex flex-wrap justify-center gap-4 mt-6">
-            {[
-              {
-                icon: Mail,
-                href: "mailto:mradulwork1316@gmail.com",
-                label: "Email",
-              },
-              {
-                icon: Linkedin,
-                href: "https://www.linkedin.com/in/mradul-patle-5207b52a7/",
-                label: "LinkedIn",
-              },
-              {
-                icon: Github,
-                href: "https://github.com/mradulpatle03",
-                label: "GitHub",
-              },
-            ].map((link, i) => (
-              <a
-                key={i}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 px-4 py-2 rounded-full bg-[#E8EDDF]/10 hover:bg-[#F5CB5C]/20 text-[#E8EDDF] hover:text-[#F5CB5C] transition-all duration-300 hover:scale-105 text-sm sm:text-base"
-              >
-                <link.icon size={18} />
-                <span className="hidden sm:inline">{link.label}</span>
-              </a>
-            ))}
+              <p className="mx-auto max-w-3xl text-base leading-relaxed text-[#CFDBD5]/80 sm:text-lg md:text-xl md:mx-0">
+                Full-Stack Developer & Problem Solver passionate about creating
+                <span className="text-[#F5CB5C]"> scalable products</span> and
+                <span className="text-[#F5CB5C]"> innovative solutions</span>.
+              </p>
+
+              {/* Socials */}
+              <div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start sm:gap-4">
+                {[
+                  {
+                    icon: Mail,
+                    href: "mailto:mradulwork1316@gmail.com",
+                    label: "Email",
+                  },
+                  {
+                    icon: Linkedin,
+                    href: "https://www.linkedin.com/in/mradul-patle-5207b52a7/",
+                    label: "LinkedIn",
+                  },
+                  {
+                    icon: Github,
+                    href: "https://github.com/mradulpatle03",
+                    label: "GitHub",
+                  },
+                ].map((link, i) => (
+                  <a
+                    key={i}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full bg-[#E8EDDF]/10 px-4 py-2 text-[#E8EDDF] transition-all duration-300 hover:scale-105 hover:bg-[#F5CB5C]/20 hover:text-[#F5CB5C] text-sm sm:text-base"
+                  >
+                    <link.icon aria-hidden="true" size={18} />
+                    <span className="hidden sm:inline">{link.label}</span>
+                    <span className="sr-only">{link.label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Avatar (sits above on mobile) */}
+            <div className="shrink-0">
+              <img
+                className="mx-auto h-40 w-40 rounded-full object-cover sm:h-56 sm:w-56 md:h-64 md:w-64"
+                src="/mradul.png"
+                alt="Profile-picture"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
           </div>
         </div>
 
-      
         <div
           className={`grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 mb-12 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -119,7 +137,6 @@ const About = () => {
           })}
         </div>
 
-       
         <div
           className={`bg-[#111111]/60 border border-[#CFDBD5]/20 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-10 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -132,9 +149,11 @@ const About = () => {
             <p>
               I'm a Computer Science student at{" "}
               <span className="text-[#F5CB5C] font-semibold">IIIT Bhopal</span>{" "}
-              with a <span className="text-[#F5CB5C]">9.79 CGPA</span>. Alongside
-              academics, I’ve solved{" "}
-              <span className="text-[#F5CB5C] font-semibold">500+ DSA problems</span>{" "}
+              with a <span className="text-[#F5CB5C]">9.79 CGPA</span>.
+              Alongside academics, I’ve solved{" "}
+              <span className="text-[#F5CB5C] font-semibold">
+                500+ DSA problems
+              </span>{" "}
               and built{" "}
               <span className="text-[#F5CB5C] font-semibold">
                 scalable full-stack projects
@@ -146,8 +165,8 @@ const About = () => {
               <span className="text-[#F5CB5C] font-semibold">
                 4-month internship as a Tech Team Member at Explified
               </span>
-              , contributing to the development of innovative web solutions using
-              the MERN stack.
+              , contributing to the development of innovative web solutions
+              using the MERN stack.
             </p>
             <p>
               I’m passionate about building impactful products, constantly
@@ -157,7 +176,6 @@ const About = () => {
           </div>
         </div>
 
-        
         <div
           className={`grid sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -187,7 +205,6 @@ const About = () => {
                 <p className="text-[#CFDBD5] text-sm sm:text-base leading-relaxed">
                   {h.description}
                 </p>
-                
               </div>
             );
           })}
@@ -195,7 +212,6 @@ const About = () => {
 
         <SkillsGrid />
 
-        
         <div
           className={`text-center mt-12 sm:mt-16 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"

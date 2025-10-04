@@ -34,7 +34,6 @@ export default function Layout() {
     }
   `}</style>
 
-      
       <div className="fixed inset-0 pointer-events-none">
         {Array.from({ length: 6 }).map((_, i) => (
           <div
@@ -49,7 +48,7 @@ export default function Layout() {
         ))}
 
         {Array.from({ length: 40 }).map((_, i) => {
-          const duration = 8 + Math.random() * 8; 
+          const duration = 8 + Math.random() * 8;
           const negativeDelay = -(Math.random() * duration);
           return (
             <div
@@ -78,14 +77,71 @@ export default function Layout() {
             className={`flex items-center justify-between transition-all duration-300
               ${isScrolled ? "h-14" : "h-16"} md:h-20`}
           >
-           
             <Link
               to="/"
-              className="relative text-2xl font-extrabold tracking-wide text-[#F5CB5C] logo-sparkle hover:scale-110 transition-transform"
+              className="taglogo group relative inline-flex items-baseline gap-2 text-2xl font-extrabold tracking-wide text-[#F5CB5C] transition-transform hover:scale-[1.06] focus-visible:scale-[1.03] outline-none"
+              aria-label="Mradul — Developer Portfolio"
             >
-              <span className="text-white">i'm</span>Mradul
-              <span className="absolute inset-0 rounded-full blur-md bg-[#F5CB5C]/20 opacity-0 hover:opacity-100 transition-opacity duration-300" />
+              {/* Render exactly: <Mradul /> */}
+              <span className="font-mono text-white/90">&lt;</span>
+              <span className="relative inline-flex items-baseline font-mono leading-none">
+                <span className="taglogo__text text-white">Mradul</span>
+                <span
+                  aria-hidden
+                  className="taglogo__caret ml-1 inline-block h-[1em] w-[0.08em] align-[-0.12em] bg-white/85"
+                />
+              </span>
+              <span className="font-mono text-white/90">/&gt;</span>
+
+              {/* underline (draws on hover/focus) */}
+              <span
+                aria-hidden
+                className="taglogo__underline pointer-events-none absolute -bottom-1 left-0 h-[2px] w-full"
+              />
             </Link>
+
+            <style>{`
+/* Typography and smoothing */
+.taglogo { text-rendering: geometricPrecision; -webkit-font-smoothing: antialiased; }
+
+/* Animated underline via background-size for performance */
+.taglogo__underline {
+  background: linear-gradient(90deg, #F5CB5C 0%, rgba(245,203,92,0.85) 60%, rgba(245,203,92,0) 100%) left bottom / 0% 2px no-repeat;
+  transition: background-size 420ms ease;
+  border-radius: 2px;
+}
+.taglogo:hover .taglogo__underline,
+.taglogo:focus-visible .taglogo__underline {
+  background-size: 100% 2px;
+}
+
+/* Neon glow scan on the text when active */
+@keyframes tag-neon {
+  0%, 100% { filter: none; }
+  45% { filter: brightness(1.04) contrast(1.04) drop-shadow(0 0 6px rgba(245,203,92,0.35)); }
+  60% { filter: brightness(0.99) contrast(1); }
+}
+.taglogo:hover .taglogo__text,
+.taglogo:focus-visible .taglogo__text {
+  animation: tag-neon 600ms linear 1;
+  text-shadow:
+    1px 0 rgba(34,211,238,0.35),
+   -1px 0 rgba(236,72,153,0.35);
+}
+
+/* Caret blink */
+@keyframes caret-blink {
+  0%, 45% { opacity: 1; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.taglogo__caret { animation: caret-blink 1.15s steps(1, end) infinite; }
+
+/* Reduced motion: disable animations and effects */
+@media (prefers-reduced-motion: reduce) {
+  .taglogo, .taglogo__caret, .taglogo__text { animation: none !important; transition: none !important; text-shadow: none !important; }
+}
+`}</style>
 
             {/* Desktop nav */}
             <nav className="hidden md:flex items-center space-x-8">
@@ -93,7 +149,7 @@ export default function Layout() {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  end={item.to === "/"} 
+                  end={item.to === "/"}
                   className={({ isActive }) =>
                     `relative nav-hover px-4 py-2 text-sm font-medium transition-colors duration-300 group ${
                       isActive
@@ -122,7 +178,6 @@ export default function Layout() {
               </button>
             </nav>
 
-           
             <button
               onClick={() => setIsMobileMenuOpen((s) => !s)}
               className="md:hidden px-4 py-2 text-[#E8EDDF] hover:text-[#F5CB5C] transition-transform duration-300"
@@ -156,7 +211,6 @@ export default function Layout() {
           </div>
         </div>
 
-        
         <div
           className={`md:hidden origin-top transform transition-all duration-500 ease-in-out 
     ${
@@ -210,7 +264,7 @@ export default function Layout() {
         </div>
       </header>
 
-      <main className="relative z-10 pt-20">
+      <main className="relative z-10">
         <Outlet />
       </main>
 

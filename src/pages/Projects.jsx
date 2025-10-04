@@ -25,27 +25,27 @@ const projects = [
       "A blogging platform with authentication, CRUD blogs, rich text editing, image upload, and category filtering. Supports 300+ blog posts.",
     link: "https://blogg-frontend-8jz9.vercel.app",
   },
-  {
-    name: "Social App",
-    tech: ["MongoDB", "Express.js", "Next.js", "Node.js", "JWT", "Tailwind"],
-    description:
-      "A real-time social network with posts, likes, comments, chat, follow system, notifications, and profiles. Designed for scale.",
-    link: "https://new-social-frontend-1zg1.vercel.app",
-  },
-  {
-    name: "Chattt",
-    tech: ["React", "Node.js", "Express.js", "MongoDB", "Zustand", "Socket.IO"],
-    description:
-      "A real-time chat app supporting 1-on-1 messaging with online/offline presence and <200ms latency. Optimized with Zustand.",
-    link: "https://fullstack-chatapp-e8lf.onrender.com",
-  },
+  // {
+  //   name: "Social App",
+  //   tech: ["MongoDB", "Express.js", "Next.js", "Node.js", "JWT", "Tailwind"],
+  //   description:
+  //     "A real-time social network with posts, likes, comments, chat, follow system, notifications, and profiles. Designed for scale.",
+  //   link: "https://new-social-frontend-1zg1.vercel.app",
+  // },
+  // {
+  //   name: "Chattt",
+  //   tech: ["React", "Node.js", "Express.js", "MongoDB", "Zustand", "Socket.IO"],
+  //   description:
+  //     "A real-time chat app supporting 1-on-1 messaging with online/offline presence and <200ms latency. Optimized with Zustand.",
+  //   link: "https://fullstack-chatapp-e8lf.onrender.com",
+  // },
 ];
 
 const Projects = () => {
   const [active, setActive] = useState(null);
 
   return (
-    <section className="py-16 px-6 sm:px-12 lg:px-20 text-[#E8EDDF]">
+    <section className="py-16 px-6 sm:px-12 lg:px-20 text-[#E8EDDF] pt-30">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl sm:text-4xl font-bold text-[#F5CB5C] mb-12 text-center">
           Projects

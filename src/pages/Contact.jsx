@@ -40,7 +40,7 @@ const Contact = () => {
   };
 
   return (
-    <section className="relative py-16 px-4 sm:px-6 lg:px-12 text-[#E8EDDF] overflow-hidden">
+    <section className="relative py-16 px-4 sm:px-6 lg:px-12 text-[#E8EDDF] pt-30 overflow-hidden">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-start">
         
         <form
