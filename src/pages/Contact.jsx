@@ -41,6 +41,10 @@ const Contact = () => {
 
   return (
     <section className="relative py-16 px-4 sm:px-6 lg:px-12 text-[#E8EDDF] pt-30 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_10%_10%,rgba(99,102,241,0.18),transparent),radial-gradient(50%_40%_at_90%_20%,rgba(236,72,153,0.16),transparent)]" />
+        
+      </div>
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-start">
         
         <form

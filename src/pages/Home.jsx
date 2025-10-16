@@ -48,7 +48,10 @@ export default function DevCommandHeroMinimal() {
   }, [q]);
 
    const go = (to) => {
-    if (to === "resume") return navigate("/resume");
+    if (to === "resume"){
+      window.location.href = "https://drive.google.com/file/d/1oTJR8BzKcMBEjyKOJOliLON_hH-l-dWR/view?usp=sharing";
+    return;
+    }
     if (to.startsWith("/")) return navigate(to);
     navigate(`/${to}`);
   };

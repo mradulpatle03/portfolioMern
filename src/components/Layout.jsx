@@ -173,9 +173,6 @@ export default function Layout() {
                 </NavLink>
               ))}
 
-              <button className="ml-4 px-6 py-2 rounded-full font-medium text-[#111111] bg-[#F5CB5C] transition-all duration-300 hover:bg-[#E8EDDF] hover:scale-105 hover:shadow-[0_0_15px_#F5CB5C]/40">
-                Hire Me
-              </button>
             </nav>
 
             <button
@@ -243,13 +240,7 @@ export default function Layout() {
               </NavLink>
             ))}
 
-            <button
-              className="w-full mt-4 px-6 py-2 rounded-full font-medium text-[#111111]
-                 bg-[#F5CB5C] transition-all duration-300 hover:bg-[#E8EDDF]
-                 hover:scale-105 active:scale-95"
-            >
-              Hire Me
-            </button>
+            
           </div>
 
           <style>{`

@@ -4,6 +4,13 @@ import { ExternalLink } from "lucide-react";
 
 const projects = [
   {
+    name: "Prep-Pilot",
+    tech: ["MongoDB", "Express.js", "React", "Node.js", "JWT", "Tailwind","Third Party API"],
+    description:
+      "Prep-Pilot is an all-in-one platform for coding interview preparation. It offers AI-generated personalized learning roadmaps, topic-wise DSA practice, company-specific question banks, an AI-powered doubt solver chatbot, and a built-in browser IDE — all wrapped in a smooth, interactive UI with a dark theme.",
+    link: "https://prep-pilot-front.onrender.com/", // Add your deployed project URL here
+  },
+  {
     name: "Shopkey",
     tech: [
       "MongoDB",
@@ -18,13 +25,15 @@ const projects = [
       "A full-stack e-commerce platform with authentication, product management, and secure checkout. Features search, filter, and pagination.",
     link: "https://shopkey-432.vercel.app",
   },
-  {
-    name: "Blogg",
-    tech: ["MERN", "Cloudinary", "Redux Toolkit"],
-    description:
-      "A blogging platform with authentication, CRUD blogs, rich text editing, image upload, and category filtering. Supports 300+ blog posts.",
-    link: "https://blogg-frontend-8jz9.vercel.app",
-  },
+  
+
+  // {
+  //   name: "Blogg",
+  //   tech: ["MERN", "Cloudinary", "Redux Toolkit"],
+  //   description:
+  //     "A blogging platform with authentication, CRUD blogs, rich text editing, image upload, and category filtering. Supports 300+ blog posts.",
+  //   link: "https://blogg-frontend-8jz9.vercel.app",
+  // },
   // {
   //   name: "Social App",
   //   tech: ["MongoDB", "Express.js", "Next.js", "Node.js", "JWT", "Tailwind"],
@@ -32,13 +41,13 @@ const projects = [
   //     "A real-time social network with posts, likes, comments, chat, follow system, notifications, and profiles. Designed for scale.",
   //   link: "https://new-social-frontend-1zg1.vercel.app",
   // },
-  // {
-  //   name: "Chattt",
-  //   tech: ["React", "Node.js", "Express.js", "MongoDB", "Zustand", "Socket.IO"],
-  //   description:
-  //     "A real-time chat app supporting 1-on-1 messaging with online/offline presence and <200ms latency. Optimized with Zustand.",
-  //   link: "https://fullstack-chatapp-e8lf.onrender.com",
-  // },
+  {
+    name: "Chattt",
+    tech: ["React", "Node.js", "Express.js", "MongoDB", "Zustand", "Socket.IO"],
+    description:
+      "A real-time chat app supporting 1-on-1 messaging with online/offline presence and <200ms latency. Optimized with Zustand.",
+    link: "https://fullstack-chatapp-e8lf.onrender.com",
+  },
 ];
 
 const Projects = () => {
@@ -46,6 +55,10 @@ const Projects = () => {
 
   return (
     <section className="py-16 px-6 sm:px-12 lg:px-20 text-[#E8EDDF] pt-30">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_10%_10%,rgba(99,102,241,0.18),transparent),radial-gradient(50%_40%_at_90%_20%,rgba(236,72,153,0.16),transparent)]" />
+        
+      </div>
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl sm:text-4xl font-bold text-[#F5CB5C] mb-12 text-center">
           Projects
@@ -56,7 +69,7 @@ const Projects = () => {
               key={i}
               onMouseEnter={() => setActive(i)}
               onMouseLeave={() => setActive(null)}
-              className={`relative p-6 rounded-2xl bg-[#1a1a1a]/70 border border-[#CFDBD5]/20 
+              className={`relative p-6 rounded-2xl bg-[#1a1a1a]/40 border border-[#CFDBD5]/20 
               backdrop-blur-sm transition-all duration-500 hover:scale-105 
               hover:border-[#F5CB5C]/40 hover:shadow-[0_0_25px_#F5CB5C]/30 cursor-pointer`}
             >

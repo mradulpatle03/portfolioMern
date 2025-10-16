@@ -43,6 +43,10 @@ const About = () => {
 
   return (
     <section className="relative py-16 px-4 sm:px-6 lg:px-12 text-[#E8EDDF] pt-30">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_10%_10%,rgba(99,102,241,0.18),transparent),radial-gradient(50%_40%_at_90%_20%,rgba(236,72,153,0.16),transparent)]" />
+        
+      </div>
       <div className="max-w-6xl mx-auto">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 mb-8">
           <div className="flex flex-col-reverse items-center gap-8 sm:gap-10 md:flex-row md:items-center md:justify-between">
@@ -121,7 +125,7 @@ const About = () => {
             return (
               <div
                 key={i}
-                className="p-4 sm:p-6 rounded-xl bg-[#1a1a1a]/70 border border-[#CFDBD5]/20 text-center 
+                className="p-4 sm:p-6 rounded-xl bg-[#1a1a1a]/40 border border-[#CFDBD5]/20 text-center 
                 hover:border-[#F5CB5C]/40 hover:shadow-[0_0_20px_#F5CB5C]/20
                 transition-all duration-300 hover:scale-105"
               >
@@ -138,7 +142,7 @@ const About = () => {
         </div>
 
         <div
-          className={`bg-[#111111]/60 border border-[#CFDBD5]/20 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-10 transition-all duration-700 ${
+          className={`bg-[#111111]/40 border border-[#CFDBD5]/20 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-10 transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
         >
@@ -188,7 +192,7 @@ const About = () => {
                 key={i}
                 onMouseEnter={() => setActiveCard(i)}
                 onMouseLeave={() => setActiveCard(null)}
-                className={`p-5 sm:p-6 rounded-xl bg-[#1a1a1a]/60 border border-[#CFDBD5]/20 backdrop-blur-sm
+                className={`p-5 sm:p-6 rounded-xl bg-[#1a1a1a]/40 border border-[#CFDBD5]/20 backdrop-blur-sm
                 hover:border-[#F5CB5C]/40 hover:shadow-[0_0_20px_#F5CB5C]/20 
                 transition-all duration-500 hover:scale-105 cursor-pointer ${
                   activeCard === i ? "ring-2 ring-[#F5CB5C]" : ""
