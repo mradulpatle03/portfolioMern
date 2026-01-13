@@ -35,7 +35,7 @@ export default function Layout() {
   `}</style>
 
       <div className="fixed inset-0 pointer-events-none">
-        {Array.from({ length: 6 }).map((_, i) => (
+        {/* {Array.from({ length: 6 }).map((_, i) => (
           <div
             key={`beam-${i}`}
             className="absolute top-0 h-[200%] w-[8rem] bg-gradient-to-b from-[#F5CB5C]/0 via-[#F5CB5C]/10 to-[#F5CB5C]/0 blur-3xl"
@@ -45,9 +45,9 @@ export default function Layout() {
               animationDelay: `${i * 3}s`,
             }}
           />
-        ))}
+        ))} */}
 
-        {Array.from({ length: 40 }).map((_, i) => {
+        {/* {Array.from({ length: 40 }).map((_, i) => {
           const duration = 8 + Math.random() * 8;
           const negativeDelay = -(Math.random() * duration);
           return (
@@ -61,7 +61,7 @@ export default function Layout() {
               }}
             />
           );
-        })}
+        })} */}
       </div>
 
       {/* Header */}
@@ -172,7 +172,6 @@ export default function Layout() {
                   )}
                 </NavLink>
               ))}
-
             </nav>
 
             <button
@@ -239,8 +238,6 @@ export default function Layout() {
                 {item.label}
               </NavLink>
             ))}
-
-            
           </div>
 
           <style>{`
