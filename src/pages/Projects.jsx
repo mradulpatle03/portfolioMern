@@ -1,116 +1,128 @@
-// src/components/Projects.jsx
-import React, { useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const projects = [
   {
     name: "Prep-Pilot",
-    tech: ["MongoDB", "Express.js", "React", "Node.js", "JWT", "Tailwind","Third Party API"],
-    description:
-      "Prep-Pilot is an all-in-one platform for coding interview preparation. It offers AI-generated personalized learning roadmaps, topic-wise DSA practice, company-specific question banks, an AI-powered doubt solver chatbot, and a built-in browser IDE — all wrapped in a smooth, interactive UI with a dark theme.",
-    link: "https://prep-pilot-front.onrender.com/", // Add your deployed project URL here
+    num: "01",
+    year: "2024",
+    category: "Full-Stack",
+    tech: ["MongoDB", "Express.js", "React", "Node.js", "JWT", "Tailwind", "AI API"],
+    description: "All-in-one coding interview prep platform. AI-generated personalized learning roadmaps, topic-wise DSA practice, company-specific question banks, an AI-powered doubt solver chatbot, and a built-in browser IDE.",
+    link: "https://prep-pilot-front.onrender.com/",
+    highlight: true,
   },
   {
     name: "Shopkey",
-    tech: [
-      "MongoDB",
-      "Express.js",
-      "React",
-      "Node.js",
-      "JWT",
-      "Tailwind",
-      "Stripe API",
-    ],
-    description:
-      "A full-stack e-commerce platform with authentication, product management, and secure checkout. Features search, filter, and pagination.",
+    num: "02",
+    year: "2024",
+    category: "E-Commerce",
+    tech: ["MongoDB", "Express.js", "React", "Node.js", "JWT", "Tailwind", "Stripe"],
+    description: "Full-stack e-commerce platform with authentication, product management, search, filter, pagination, and Stripe-powered secure checkout.",
     link: "https://shopkey-432.vercel.app",
   },
-  
-
-  // {
-  //   name: "Blogg",
-  //   tech: ["MERN", "Cloudinary", "Redux Toolkit"],
-  //   description:
-  //     "A blogging platform with authentication, CRUD blogs, rich text editing, image upload, and category filtering. Supports 300+ blog posts.",
-  //   link: "https://blogg-frontend-8jz9.vercel.app",
-  // },
-  // {
-  //   name: "Social App",
-  //   tech: ["MongoDB", "Express.js", "Next.js", "Node.js", "JWT", "Tailwind"],
-  //   description:
-  //     "A real-time social network with posts, likes, comments, chat, follow system, notifications, and profiles. Designed for scale.",
-  //   link: "https://new-social-frontend-1zg1.vercel.app",
-  // },
   {
     name: "Chattt",
+    num: "03",
+    year: "2024",
+    category: "Real-Time",
     tech: ["React", "Node.js", "Express.js", "MongoDB", "Zustand", "Socket.IO"],
-    description:
-      "A real-time chat app supporting 1-on-1 messaging with online/offline presence and <200ms latency. Optimized with Zustand.",
+    description: "Real-time chat app supporting 1-on-1 messaging with online/offline presence indicators and under 200ms latency, optimized with Zustand state management.",
     link: "https://fullstack-chatapp-e8lf.onrender.com",
   },
 ];
 
-const Projects = () => {
-  const [active, setActive] = useState(null);
+function TiltCard({ children, style }) {
+  const onMove = (e) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 12;
+    const y = ((e.clientY - r.top) / r.height - 0.5) * -12;
+    el.style.transform = `perspective(700px) rotateX(${y}deg) rotateY(${x}deg) translateZ(8px)`;
+  };
+  const onLeave = (e) => { e.currentTarget.style.transform = "perspective(700px) rotateX(0) rotateY(0) translateZ(0)"; };
+  return (
+    <div onMouseMove={onMove} onMouseLeave={onLeave}
+      style={{ transition: "transform 0.18s ease", willChange: "transform", ...style }}>
+      {children}
+    </div>
+  );
+}
+
+export default function Projects() {
+  const [hovered, setHovered] = useState(null);
 
   return (
-    <section className="py-16 px-6 sm:px-12 lg:px-20 text-[#E8EDDF] pt-30">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_10%_10%,rgba(99,102,241,0.18),transparent),radial-gradient(50%_40%_at_90%_20%,rgba(236,72,153,0.16),transparent)]" />
-        
-      </div>
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#F5CB5C] mb-12 text-center">
+    <div style={{ padding: "60px 24px 100px", maxWidth: 1100, margin: "0 auto" }}>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ marginBottom: 64 }}>
+        <p style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--accent)", marginBottom: 12 }}>// selected work</p>
+        <h1 style={{ fontSize: "clamp(40px,7vw,80px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1 }}>
           Projects
-        </h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, i) => (
-            <div
-              key={i}
-              onMouseEnter={() => setActive(i)}
-              onMouseLeave={() => setActive(null)}
-              className={`relative p-6 rounded-2xl bg-[#1a1a1a]/40 border border-[#CFDBD5]/20 
-              backdrop-blur-sm transition-all duration-500 hover:scale-105 
-              hover:border-[#F5CB5C]/40 hover:shadow-[0_0_25px_#F5CB5C]/30 cursor-pointer`}
-            >
-              <h3 className="text-xl font-semibold text-[#E8EDDF] mb-3 flex items-center justify-between">
-                {project.name}
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="z-10 text-[#F5CB5C] hover:text-[#E8EDDF] transition-colors"
-                >
-                  <ExternalLink size={18} />
-                </a>
-              </h3>
+        </h1>
+      </motion.div>
 
-              <p className="text-sm text-[#CFDBD5] mb-4 leading-relaxed">
-                {project.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2">
-                {project.tech.map((t, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2 py-1 text-xs rounded-full bg-[#F5CB5C]/10 text-[#F5CB5C] border border-[#F5CB5C]/30"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-
+      {/* Project list */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {projects.map((p, i) => (
+          <motion.div key={i}
+            initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: i * 0.1 }}>
+            <TiltCard style={{
+              background: hovered === i ? "#161616" : "var(--surface)",
+              border: `1px solid ${p.highlight ? "rgba(232,255,71,0.2)" : "var(--border)"}`,
+              borderRadius: 16,
+            }}>
               <div
-                className={`absolute inset-0 rounded-2xl bg-gradient-to-br from-[#F5CB5C]/5 to-transparent opacity-0 transition-opacity duration-500 ${
-                  active === i ? "opacity-100" : ""
-                }`}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+                style={{ padding: "32px 36px", cursor: "default" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16, marginBottom: 16 }}>
+                  <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--accent)", opacity: 0.5 }}>{p.num}</span>
+                    <h2 style={{ fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 800, letterSpacing: "-0.02em" }}>{p.name}</h2>
+                    {p.highlight && (
+                      <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 100, background: "rgba(232,255,71,0.1)", color: "var(--accent)", border: "1px solid rgba(232,255,71,0.2)", fontFamily: "var(--font-mono)" }}>
+                        featured
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--muted)" }}>{p.year}</span>
+                    <span className="tag">{p.category}</span>
+                    <a href={p.link} target="_blank" rel="noopener noreferrer" data-hover
+                      style={{
+                        width: 36, height: 36, borderRadius: 8,
+                        border: "1px solid var(--border-hover)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        color: "var(--muted)", textDecoration: "none", fontSize: 16,
+                        transition: "all 0.2s",
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "#0a0a0a"; e.currentTarget.style.borderColor = "var(--accent)"; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--muted)"; e.currentTarget.style.borderColor = "var(--border-hover)"; }}
+                    >↗</a>
+                  </div>
+                </div>
 
-export default Projects;
+                <p style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.7, maxWidth: 680, marginBottom: 20 }}>{p.description}</p>
+
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  {p.tech.map((t, j) => <span key={j} className="tag">{t}</span>)}
+                </div>
+              </div>
+            </TiltCard>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* More coming soon */}
+      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        style={{ marginTop: 48, textAlign: "center", padding: "32px", border: "1px dashed var(--border)", borderRadius: 16 }}>
+        <p style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--muted)" }}>
+          // more projects on{" "}
+          <a href="https://github.com/mradulpatle03" target="_blank" rel="noopener noreferrer" data-hover
+            style={{ color: "var(--accent)", textDecoration: "none" }}>GitHub ↗</a>
+        </p>
+      </motion.div>
+    </div>
+  );
+}

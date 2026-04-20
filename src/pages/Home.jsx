@@ -1,177 +1,239 @@
-// DevCommandHeroMinimal.jsx
-// React + Tailwind + Framer Motion (JavaScript)
-// npm i framer-motion
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {useNavigate} from "react-router-dom";
 
+const ROLES = ["Full-Stack Developer", "MERN Engineer", "DSA Problem Solver", "Open Source Contributor"];
 
+const MARQUEE_ITEMS = ["React", "Node.js", "MongoDB", "Express", "TypeScript", "Socket.IO", "Tailwind", "JWT", "REST APIs", "Redux", "Zustand", "Git"];
 
-const commandsSeed = [
-  { id: "projects", label: "Open Projects", hint: "View case studies" },
-  { id: "about", label: "Who am I?", hint: "Read profile" },
-  { id: "about", label: "Tech Stack", hint: "Tools I use" },
-  { id: "contact", label: "Contact", hint: "Let’s collaborate" },
-  { id: "resume", label: "Download Resume", hint: "PDF resume" },
-];
+function TypingRole() {
+  const [idx, setIdx] = useState(0);
+  const [displayed, setDisplayed] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [wait, setWait] = useState(false);
 
-function TerminalLine({ prefix = ">", text }) {
-  const [shown, setShown] = useState("");
   useEffect(() => {
-    let i = 0;
-    const id = setInterval(() => {
-      setShown(text.slice(0, i++));
-      if (i > text.length) clearInterval(id);
-    }, 22);
-    return () => clearInterval(id);
-  }, [text]);
+    const target = ROLES[idx];
+    if (wait) { const t = setTimeout(() => setWait(false), 1200); return () => clearTimeout(t); }
+    if (!deleting && displayed === target) { setWait(true); setDeleting(true); return; }
+    if (deleting && displayed === "") { setDeleting(false); setIdx(i => (i + 1) % ROLES.length); return; }
+    const speed = deleting ? 40 : 70;
+    const t = setTimeout(() => {
+      setDisplayed(d => deleting ? d.slice(0, -1) : target.slice(0, d.length + 1));
+    }, speed);
+    return () => clearTimeout(t);
+  }, [displayed, deleting, idx, wait]);
+
   return (
-    <div className="font-mono text-sm text-slate-300">
-      <span className="text-emerald-400">{prefix}</span> {shown}
-      <span className="ml-0.5 inline-block h-4 w-2 animate-pulse bg-slate-300/80 align-middle rounded-[2px]" />
+    <span style={{ color: "var(--accent)", fontFamily: "var(--font-mono)", fontSize: "clamp(18px,3vw,28px)", fontWeight: 400 }}>
+      {displayed}<span style={{ animation: "blink 1s steps(1) infinite", display: "inline-block", width: 2, height: "1em", background: "var(--accent)", verticalAlign: "middle", marginLeft: 2 }} />
+    </span>
+  );
+}
+
+function TiltCard({ children, style }) {
+  const ref = useRef(null);
+  const onMove = (e) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 14;
+    const y = ((e.clientY - r.top) / r.height - 0.5) * -14;
+    el.style.transform = `perspective(600px) rotateX(${y}deg) rotateY(${x}deg) scale(1.02)`;
+  };
+  const onLeave = () => { if (ref.current) ref.current.style.transform = "perspective(600px) rotateX(0) rotateY(0) scale(1)"; };
+  return (
+    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} style={{ transition: "transform 0.15s ease", ...style }}>
+      {children}
     </div>
   );
 }
 
-export default function DevCommandHeroMinimal() {
-  const [q, setQ] = useState("");
-  const navigate = useNavigate(); 
+export default function Home() {
+  const navigate = useNavigate();
 
-  const commands = useMemo(() => {
-    const qq = q.toLowerCase().trim();
-    if (!qq) return commandsSeed;
-    return commandsSeed.filter(
-      (c) =>
-        c.label.toLowerCase().includes(qq) ||
-        c.hint.toLowerCase().includes(qq)
-    );
-  }, [q]);
-
-   const go = (to) => {
-    if (to === "resume"){
-      window.location.href = "https://drive.google.com/file/d/1oTJR8BzKcMBEjyKOJOliLON_hH-l-dWR/view?usp=sharing";
-    return;
-    }
-    if (to.startsWith("/")) return navigate(to);
-    navigate(`/${to}`);
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.1 } },
+  };
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 200, damping: 22 } },
   };
 
-  const fadeUp = (delay = 0) => ({
-    initial: { y: 20, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-    transition: { type: "spring", stiffness: 220, damping: 24, delay },
-  });
-
   return (
-    <section className="relative min-h-screen w-full overflow-hidden text-slate-100">
-      {/* Static background gradients (no mouse effects) */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_10%_10%,rgba(99,102,241,0.18),transparent),radial-gradient(50%_40%_at_90%_20%,rgba(236,72,153,0.16),transparent)]" />
+    <div>
+      {/* HERO */}
+      <section style={{ minHeight: "calc(100vh - 64px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px", position: "relative", overflow: "hidden" }}>
         
-      </div>
+        {/* Decorative glow orbs */}
+        <div style={{ position: "absolute", top: "20%", left: "5%", width: 300, height: 300, borderRadius: "50%", background: "rgba(124,92,252,0.08)", filter: "blur(80px)", animation: "glow-pulse 4s ease-in-out infinite", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "15%", right: "8%", width: 240, height: 240, borderRadius: "50%", background: "rgba(232,255,71,0.05)", filter: "blur(70px)", animation: "glow-pulse 6s ease-in-out infinite 2s", pointerEvents: "none" }} />
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center gap-8 px-6 py-24">
+        <motion.div variants={containerVariants} initial="hidden" animate="visible"
+          style={{ maxWidth: 860, width: "100%", textAlign: "center" }}>
 
-        {/* Headline */}
-        <motion.h1
-          {...fadeUp(0.05)}
-          className="text-center text-4xl font-semibold leading-tight sm:text-5xl md:text-6xl"
-        >
-          {"<Full-Stack Web Developer\n\nCode. Build. Deploy. />"}
-        </motion.h1>
-
-        {/* Subtext */}
-        <motion.p
-          {...fadeUp(0.1)}
-          className="max-w-2xl text-center text-lg text-slate-300/90"
-        >
-          Fast, reliable, and thoughtfully animated web experiences with modern
-          MERN practices and a dev‑tool workflow.
-        </motion.p>
-
-        {/* Terminal */}
-        <motion.div
-          {...fadeUp(0.15)}
-          className="w-full rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
-        >
-          <div className="mb-3 flex items-center justify-between text-xs text-slate-400">
-            <span className="inline-flex items-center gap-2">
-              <span className="size-2 rounded-full bg-red-400" />
-              <span className="size-2 rounded-full bg-yellow-400" />
-              <span className="size-2 rounded-full bg-emerald-400" />
+          <motion.div variants={itemVariants}>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "6px 14px", borderRadius: 100,
+              border: "1px solid rgba(232,255,71,0.25)",
+              background: "rgba(232,255,71,0.05)",
+              fontFamily: "var(--font-mono)", fontSize: 12, color: "rgba(232,255,71,0.8)",
+              marginBottom: 32,
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 8px var(--accent)", animation: "glow-pulse 2s infinite" }} />
+              Available for internships & freelance
             </span>
-            <span>dev@portfolio: ~/home</span>
-          </div>
-          <div className="space-y-1.5">
-            <TerminalLine text="hello-world: crafting fast, reliable, animated web experiences" />
-            <TerminalLine text="stack: react / node / express / mongodb / javascript / tailwind / framer-motion" />
-            <TerminalLine text="current: open to internships and freelance, MERN-focused" />
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Command Palette */}
-        <motion.div
-          {...fadeUp(0.2)}
-          className="w-full rounded-2xl border border-indigo-400/20 bg-slate-900/70 shadow-[0_0_40px_-10px_rgba(99,102,241,0.4)]"
-        >
-          <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3">
-            <span className="rounded-md bg-indigo-500/20 px-2 py-1 text-xs text-indigo-300">
-              ⌘K
-            </span>
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Type a command… e.g. projects"
-              className="flex-1 bg-transparent text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none"
-            />
-          </div>
-          <div className="max-h-56 overflow-auto px-2 py-2 no-scrollbar">
-            {commands.map((c, i) => (
-              <motion.button
-                key={c.id}
-                onClick={() => go(c.id)}
-                whileHover={{ x: 6, scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 500, damping: 28 }}
-                className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left transition hover:bg-white/5"
-              >
-                <span className="text-slate-100">{c.label}</span>
-                <span className="text-xs text-slate-400">{c.hint}</span>
-              </motion.button>
-            ))}
-            {!commands.length && (
-              <div className="px-3 py-2 text-sm text-slate-500">
-                No matches. Try “projects”.
+          <motion.h1 variants={itemVariants} style={{
+            fontSize: "clamp(42px, 7vw, 88px)", fontWeight: 800, lineHeight: 1.05,
+            letterSpacing: "-0.03em", marginBottom: 20,
+            background: "linear-gradient(135deg, #f0ede8 30%, #7a7672 100%)",
+            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+          }}>
+            Mradul Patle
+          </motion.h1>
+
+          <motion.div variants={itemVariants} style={{ marginBottom: 28, height: 40, display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <TypingRole />
+          </motion.div>
+
+          <motion.p variants={itemVariants} style={{
+            fontSize: 17, color: "var(--muted)", lineHeight: 1.7,
+            maxWidth: 560, margin: "0 auto 40px",
+          }}>
+            CS student at <span style={{ color: "var(--text)" }}>IIIT Bhopal</span> · 9.79 CGPA · 500+ DSA problems · building fast, real-world MERN apps.
+          </motion.p>
+
+          <motion.div variants={itemVariants} style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 64 }}>
+            <motion.button onClick={() => navigate("/projects")} data-hover
+              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+              style={{
+                padding: "13px 28px", borderRadius: 8, border: "none",
+                background: "var(--accent)", color: "#0a0a0a",
+                fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 700, cursor: "pointer",
+                letterSpacing: "0.02em",
+              }}>
+              View Projects →
+            </motion.button>
+            <motion.button onClick={() => navigate("/contact")} data-hover
+              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+              style={{
+                padding: "13px 28px", borderRadius: 8,
+                border: "1px solid var(--border-hover)",
+                background: "transparent", color: "var(--text)",
+                fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: 600, cursor: "pointer",
+              }}>
+              Contact Me
+            </motion.button>
+          </motion.div>
+
+          {/* Stats row */}
+          <motion.div variants={itemVariants}
+            style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1, background: "var(--border)", border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden", maxWidth: 520, margin: "0 auto" }}>
+            {[
+              { n: "9.79", label: "CGPA" },
+              { n: "500+", label: "DSA Problems" },
+              { n: "4+", label: "Projects Shipped" },
+            ].map((s, i) => (
+              <div key={i} style={{ background: "var(--surface)", padding: "20px 16px", textAlign: "center" }}>
+                <div style={{ fontSize: 28, fontWeight: 800, color: "var(--accent)", letterSpacing: "-0.02em" }}>{s.n}</div>
+                <div style={{ fontSize: 11, color: "var(--muted)", fontFamily: "var(--font-mono)", marginTop: 4 }}>{s.label}</div>
               </div>
-            )}
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* MARQUEE TECH STACK */}
+      <div style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "16px 0", overflow: "hidden", position: "relative", zIndex: 1 }}>
+        <div style={{ display: "flex", gap: 32, width: "max-content", animation: "marquee 28s linear infinite" }}>
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+            <span key={i} style={{ whiteSpace: "nowrap", fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--muted)", display: "flex", alignItems: "center", gap: 32 }}>
+              {item}
+              <span style={{ color: "var(--accent)", opacity: 0.4, marginLeft: -16 }}>·</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* FEATURED PROJECTS PREVIEW */}
+      <section className="section" style={{ padding: "100px 24px", maxWidth: 1200, margin: "0 auto" }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48, flexWrap: "wrap", gap: 16 }}>
+            <div>
+              <p style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--accent)", marginBottom: 8 }}>// selected work</p>
+              <h2 style={{ fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 800, letterSpacing: "-0.02em" }}>Projects</h2>
+            </div>
+            <motion.button onClick={() => navigate("/projects")} data-hover
+              whileHover={{ x: 4 }}
+              style={{ background: "none", border: "none", color: "var(--muted)", fontSize: 14, cursor: "pointer", fontFamily: "var(--font-sans)", display: "flex", alignItems: "center", gap: 6 }}>
+              All projects →
+            </motion.button>
           </div>
         </motion.div>
 
-        {/* Primary CTAs */}
-        <motion.div
-          {...fadeUp(0.25)}
-          className="flex flex-wrap items-center justify-center gap-3 pt-1"
-        >
-          <motion.a
-            href="/projects"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 600, damping: 28 }}
-            className="rounded-lg bg-indigo-500 px-5 py-3 text-sm font-medium text-white shadow-lg shadow-indigo-900/30 transition hover:bg-indigo-400"
-          >
-            Open Projects
-          </motion.a>
-          <motion.a
-            href="/contact"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 600, damping: 28 }}
-            className="rounded-lg border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-white backdrop-blur transition hover:border-indigo-300/60 hover:text-indigo-200"
-          >
-            Contact
-          </motion.a>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
+          {[
+            { name: "Prep-Pilot", desc: "AI-powered coding interview prep with personalized roadmaps, DSA practice, and a browser IDE.", tech: ["MERN", "JWT", "AI API"], num: "01", link: "https://prep-pilot-front.onrender.com/" },
+            { name: "Shopkey", desc: "Full-stack e-commerce with auth, product management, and Stripe-powered secure checkout.", tech: ["MERN", "Stripe", "JWT"], num: "02", link: "https://shopkey-432.vercel.app" },
+            { name: "Chattt", desc: "Real-time 1-on-1 messaging with <200ms latency, online presence, and Zustand state.", tech: ["Socket.IO", "MERN", "Zustand"], num: "03", link: "https://fullstack-chatapp-e8lf.onrender.com" },
+          ].map((p, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
+              <TiltCard style={{
+                background: "var(--surface)", border: "1px solid var(--border)",
+                borderRadius: 16, padding: 28, height: "100%",
+                cursor: "pointer",
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--accent)", opacity: 0.6 }}>{p.num}</span>
+                  <a href={p.link} target="_blank" rel="noopener noreferrer" data-hover
+                    style={{ color: "var(--muted)", fontSize: 18, textDecoration: "none", transition: "color 0.2s" }}
+                    onMouseEnter={e => e.target.style.color = "var(--accent)"}
+                    onMouseLeave={e => e.target.style.color = "var(--muted)"}
+                  >↗</a>
+                </div>
+                <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 10, letterSpacing: "-0.01em" }}>{p.name}</h3>
+                <p style={{ fontSize: 14, color: "var(--muted)", lineHeight: 1.6, marginBottom: 20 }}>{p.desc}</p>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  {p.tech.map((t, j) => <span key={j} className="tag">{t}</span>)}
+                </div>
+              </TiltCard>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA BANNER */}
+      <section className="section" style={{ padding: "0 24px 100px" }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          style={{
+            maxWidth: 1200, margin: "0 auto",
+            background: "var(--surface)", border: "1px solid var(--border)",
+            borderRadius: 20, padding: "60px 48px",
+            display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 28,
+            position: "relative", overflow: "hidden",
+          }}>
+          <div style={{ position: "absolute", top: -40, right: -40, width: 200, height: 200, borderRadius: "50%", background: "rgba(232,255,71,0.04)", filter: "blur(40px)", pointerEvents: "none" }} />
+          <div>
+            <h2 style={{ fontSize: "clamp(24px,4vw,40px)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 10 }}>
+              Let's build something <span style={{ color: "var(--accent)", fontStyle: "italic", fontFamily: "var(--font-serif)" }}>remarkable</span>
+            </h2>
+            <p style={{ color: "var(--muted)", fontSize: 15 }}>Open to internships, freelance projects, and full-time roles.</p>
+          </div>
+          <motion.button onClick={() => navigate("/contact")} data-hover
+            whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+            style={{
+              padding: "14px 32px", borderRadius: 8, border: "none",
+              background: "var(--accent)", color: "#0a0a0a",
+              fontFamily: "var(--font-sans)", fontSize: 15, fontWeight: 700, cursor: "pointer",
+              whiteSpace: "nowrap",
+            }}>
+            Get in touch →
+          </motion.button>
         </motion.div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

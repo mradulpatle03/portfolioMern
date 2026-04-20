@@ -1,170 +1,125 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Mail, Github, Linkedin, Send, Phone } from "lucide-react";
+import { useState, useRef } from "react";
+import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 
-const Contact = () => {
-  const [isVisible, setIsVisible] = useState(false);
+const iv = (delay = 0) => ({
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, delay },
+});
+
+export default function Contact() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
   const formRef = useRef();
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   const sendEmail = (e) => {
     e.preventDefault();
     setLoading(true);
     setStatus(null);
+    emailjs.sendForm("your_service_id", "your_template_id", formRef.current, "your_public_key")
+      .then(() => { setStatus("success"); setLoading(false); formRef.current.reset(); })
+      .catch(() => { setStatus("error"); setLoading(false); });
+  };
 
-    emailjs
-      .sendForm(
-        "your_service_id",   // 🔥 Replace with your EmailJS Service ID
-        "your_template_id",  // 🔥 Replace with your EmailJS Template ID
-        formRef.current,
-        "your_public_key"    // 🔥 Replace with your EmailJS Public Key
-      )
-      .then(
-        () => {
-          setStatus("Message sent successfully! ✅");
-          setLoading(false);
-          formRef.current.reset();
-        },
-        (error) => {
-          setStatus("Something went wrong ❌ Please try again.");
-          console.error("EmailJS Error:", error);
-          setLoading(false);
-        }
-      );
+  const inputStyle = {
+    width: "100%", background: "var(--surface)", border: "1px solid var(--border)",
+    borderRadius: 8, padding: "12px 16px", color: "var(--text)",
+    fontFamily: "var(--font-sans)", fontSize: 14, outline: "none",
+    transition: "border-color 0.2s",
   };
 
   return (
-    <section className="relative py-16 px-4 sm:px-6 lg:px-12 text-[#E8EDDF] pt-30 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_10%_10%,rgba(99,102,241,0.18),transparent),radial-gradient(50%_40%_at_90%_20%,rgba(236,72,153,0.16),transparent)]" />
-        
-      </div>
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-start">
-        
-        <form
-          ref={formRef}
-          onSubmit={sendEmail}
-          className={` border border-[#CFDBD5]/20 backdrop-blur-sm p-6 sm:p-8 rounded-2xl shadow-lg transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
-          }`}
-        >
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#F5CB5C] mb-6">
-            Send Me a Message
-          </h2>
-          <div className="space-y-5">
+    <div style={{ padding: "60px 24px 100px", maxWidth: 1000, margin: "0 auto" }}>
+      <motion.div {...iv(0)} style={{ marginBottom: 64 }}>
+        <p style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--accent)", marginBottom: 12 }}>// get in touch</p>
+        <h1 style={{ fontSize: "clamp(40px,7vw,80px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1, marginBottom: 16 }}>
+          Let's talk.
+        </h1>
+        <p style={{ fontSize: 17, color: "var(--muted)", maxWidth: 500 }}>
+          Open to internships, freelance projects, and collaborations. Drop a message and I'll get back within 24 hours.
+        </p>
+      </motion.div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "start" }} className="contact-grid">
+        {/* Form */}
+        <motion.div {...iv(0.1)}>
+          <form ref={formRef} onSubmit={sendEmail} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
-              <label className="block text-sm font-medium mb-2 text-[#CFDBD5]">
-                Name
-              </label>
-              <input
-                type="text"
-                name="from_name"
-                required
-                className="w-full px-4 py-3 rounded-md  border border-[#CFDBD5]/20 text-[#E8EDDF] placeholder-[#CFDBD5]/50 focus:outline-none focus:border-[#F5CB5C] focus:shadow-[0_0_10px_#F5CB5C]/30 transition-all"
-                placeholder="Your Name"
-              />
+              <label style={{ display: "block", fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--muted)", marginBottom: 8 }}>name</label>
+              <input type="text" name="from_name" required placeholder="Your name" style={inputStyle}
+                onFocus={e => e.target.style.borderColor = "var(--accent)"}
+                onBlur={e => e.target.style.borderColor = "var(--border)"} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2 text-[#CFDBD5]">
-                Email
-              </label>
-              <input
-                type="email"
-                name="from_email"
-                required
-                className="w-full px-4 py-3 rounded-md  border border-[#CFDBD5]/20 text-[#E8EDDF] placeholder-[#CFDBD5]/50 focus:outline-none focus:border-[#F5CB5C] focus:shadow-[0_0_10px_#F5CB5C]/30 transition-all"
-                placeholder="you@example.com"
-              />
+              <label style={{ display: "block", fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--muted)", marginBottom: 8 }}>email</label>
+              <input type="email" name="from_email" required placeholder="you@example.com" style={inputStyle}
+                onFocus={e => e.target.style.borderColor = "var(--accent)"}
+                onBlur={e => e.target.style.borderColor = "var(--border)"} />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2 text-[#CFDBD5]">
-                Message
-              </label>
-              <textarea
-                rows="5"
-                name="message"
-                required
-                className="w-full px-4 py-3 rounded-md  border border-[#CFDBD5]/20 text-[#E8EDDF] placeholder-[#CFDBD5]/50 focus:outline-none focus:border-[#F5CB5C] focus:shadow-[0_0_10px_#F5CB5C]/30 transition-all"
-                placeholder="Write your message..."
-              />
+              <label style={{ display: "block", fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--muted)", marginBottom: 8 }}>message</label>
+              <textarea name="message" required rows={5} placeholder="What's on your mind?" style={{ ...inputStyle, resize: "vertical", minHeight: 120 }}
+                onFocus={e => e.target.style.borderColor = "var(--accent)"}
+                onBlur={e => e.target.style.borderColor = "var(--border)"} />
             </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#F5CB5C] text-[#111111] font-semibold hover:bg-[#E8EDDF] hover:scale-105 transition-all duration-300 shadow-md hover:shadow-[0_0_15px_#F5CB5C]/40 disabled:opacity-60 disabled:cursor-not-allowed"
+            <motion.button type="submit" disabled={loading} data-hover
+              whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+              style={{
+                padding: "14px 28px", borderRadius: 8, border: "none",
+                background: loading ? "rgba(232,255,71,0.5)" : "var(--accent)",
+                color: "#0a0a0a", fontFamily: "var(--font-sans)", fontSize: 14,
+                fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              }}>
+              {loading ? "Sending..." : "Send message →"}
+            </motion.button>
+            {status === "success" && <p style={{ fontSize: 13, color: "#4ade80", fontFamily: "var(--font-mono)" }}>✓ Message sent!</p>}
+            {status === "error" && <p style={{ fontSize: 13, color: "#f87171", fontFamily: "var(--font-mono)" }}>✗ Something went wrong. Try again.</p>}
+          </form>
+        </motion.div>
+
+        {/* Contact info */}
+        <motion.div {...iv(0.2)} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <p style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--muted)", marginBottom: 8 }}>// direct channels</p>
+          {[
+            { label: "Email", value: "mradulwork1316@gmail.com", href: "mailto:mradulwork1316@gmail.com" },
+            { label: "Phone", value: "+91 62648 28235", href: "tel:+916264828235" },
+            { label: "LinkedIn", value: "mradul-patle-5207b52a7", href: "https://www.linkedin.com/in/mradul-patle-5207b52a7/" },
+            { label: "GitHub", value: "mradulpatle03", href: "https://github.com/mradulpatle03" },
+          ].map((c, i) => (
+            <a key={i} href={c.href} target="_blank" rel="noopener noreferrer" data-hover
+              style={{
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                padding: "16px 20px", borderRadius: 10,
+                border: "1px solid var(--border)", background: "var(--surface)",
+                textDecoration: "none", transition: "border-color 0.2s, background 0.2s",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-hover)"; e.currentTarget.style.background = "#1a1a1a"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.background = "var(--surface)"; }}
             >
-              {loading ? "Sending..." : "Send Message"}
-              <Send className="w-4 h-4" />
-            </button>
-            {status && (
-              <p className="text-center text-sm mt-3 text-[#F5CB5C]">
-                {status}
-              </p>
-            )}
-          </div>
-        </form>
+              <span style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--muted)" }}>{c.label}</span>
+              <span style={{ fontSize: 13, color: "var(--text)" }}>{c.value} ↗</span>
+            </a>
+          ))}
 
-        
-        <div
-          className={`flex flex-col justify-center space-y-6 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
-          }`}
-        >
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#F5CB5C] mb-2">
-            Let’s Connect
-          </h2>
-          <p className="text-[#CFDBD5]/80 text-base leading-relaxed max-w-md">
-            I’m always open to exciting projects, collaborations, and
-            opportunities. Reach out via the form, or directly through these
-            channels:
-          </p>
-
-          <div className="space-y-4">
-            {[
-              {
-                icon: Mail,
-                label: "mradulwork1316@gmail.com",
-                href: "mailto:mradulwork1316@gmail.com",
-              },
-              {
-                icon: Phone,
-                label: "+91 6264828235",
-                href: "tel:+916264828235",
-              },
-              {
-                icon: Linkedin,
-                label: "LinkedIn",
-                href: "https://www.linkedin.com/in/mradul-patle-5207b52a7/",
-              },
-              {
-                icon: Github,
-                label: "GitHub",
-                href: "https://github.com/mradulpatle03",
-              },
-            ].map((contact, i) => (
-              <a
-                key={i}
-                href={contact.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ transitionDelay: `${i * 100}ms` }}
-                className="flex items-center gap-4 px-5 py-3 rounded-xl  border border-[#CFDBD5]/20 hover:border-[#F5CB5C]/40 text-[#CFDBD5] hover:text-[#F5CB5C] hover:shadow-[0_0_20px_#F5CB5C]/30 transition-all duration-300 hover:scale-105"
-              >
-                <contact.icon className="w-5 h-5" />
-                <span className="font-medium">{contact.label}</span>
-              </a>
-            ))}
+          {/* Availability badge */}
+          <div style={{ marginTop: 16, padding: "16px 20px", borderRadius: 10, border: "1px solid rgba(232,255,71,0.15)", background: "rgba(232,255,71,0.04)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 8px var(--accent)", animation: "glow-pulse 2s infinite", flexShrink: 0 }} />
+              <span style={{ fontSize: 13, color: "var(--text)", fontWeight: 600 }}>Currently available</span>
+            </div>
+            <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 6, fontFamily: "var(--font-mono)" }}>for internships & freelance work</p>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </section>
-  );
-};
 
-export default Contact;
+      <style>{`
+        @media (max-width: 640px) {
+          .contact-grid { grid-template-columns: 1fr !important; }
+        }
+        input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.6; }
+      `}</style>
+    </div>
+  );
+}
