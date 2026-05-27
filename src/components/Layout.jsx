@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, NavLink, Link } from "react-router-dom";
 import Footer from "./Footer";
-import Cursor from "./Cursor";
 
 const navItems = [
   { to: "/", label: "Home" },
