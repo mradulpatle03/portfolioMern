@@ -3,32 +3,64 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const projects = [
   {
-    name: "Prep-Pilot",
-    num: "01",
-    year: "2024",
-    category: "Full-Stack",
-    tech: ["MongoDB", "Express.js", "React", "Node.js", "JWT", "Tailwind", "AI API"],
-    description: "All-in-one coding interview prep platform. AI-generated personalized learning roadmaps, topic-wise DSA practice, company-specific question banks, an AI-powered doubt solver chatbot, and a built-in browser IDE.",
-    link: "https://prep-pilot-front.onrender.com/",
-    highlight: true,
+    name: "PlacementOS",
+    link: "https://github.com/mradulpatle03/PlacementOS",
+    tagline: "Placement Management System",
+    period: "Jun 2026 – Present",
+    branch: "feature/placement-os",
+    tech: ["React", "Node.js", "MongoDB", "Redis", "BullMQ", "Socket.IO"],
+    bullets: [
+      "Assembled a full-stack SaaS platform digitizing the entire college placement lifecycle across 5 roles: Student, Coordinator, TPO, Recruiter, and Admin.",
+      "Rolled out a Smart Eligibility Engine auto-filtering candidates by CGPA, branch, and backlogs, plus a configurable Policy Engine enforcing one-offer and dream-company rules.",
+      "Integrated a 9-stage Kanban recruitment pipeline with drag-and-drop, bulk actions, and Excel/CSV export at every stage using BullMQ background jobs.",
+    ],
+    stat: { label: "roles supported", value: "5" },
+    accent: "var(--accent2)",
   },
   {
-    name: "Shopkey",
-    num: "02",
-    year: "2024",
-    category: "E-Commerce",
-    tech: ["MongoDB", "Express.js", "React", "Node.js", "JWT", "Tailwind", "Stripe"],
-    description: "Full-stack e-commerce platform with authentication, product management, search, filter, pagination, and Stripe-powered secure checkout.",
-    link: "https://shopkey-432.vercel.app",
+    name: "HireFlow",
+    link: "https://ai-hiring-platform-phi.vercel.app/",
+    tagline: "AI Hiring Platform",
+    period: "Apr 2026 – Jun 2026",
+    branch: "feature/resume-scoring",
+    tech: [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Socket.IO",
+      "Groq LLM",
+      "Bull Queue",
+    ],
+    bullets: [
+      "Built a full-stack AI hiring platform with explainable multi-dimensional resume scoring across 5 dimensions using Groq LLM for automated candidate ranking.",
+      "Coded real-time messaging via Socket.IO with typing indicators and an interview scheduling system with confirmation emails and calendar (.ics) attachments.",
+      "Configured semantic resume-job matching using custom vector embeddings, a background screening queue, and a recruiter analytics dashboard with funnel and score charts.",
+    ],
+    stat: { label: "scoring dimensions", value: "5" },
+    accent: "var(--bg2)",
   },
   {
-    name: "Chattt",
-    num: "03",
-    year: "2024",
-    category: "Real-Time",
-    tech: ["React", "Node.js", "Express.js", "MongoDB", "Zustand", "Socket.IO"],
-    description: "Real-time chat app supporting 1-on-1 messaging with online/offline presence indicators and under 200ms latency, optimized with Zustand state management.",
-    link: "https://fullstack-chatapp-e8lf.onrender.com",
+    name: "Habit-Forge",
+    link: "https://habitforge-sand.vercel.app/",
+    tagline: "Intent vs Evidence Habit Tracker",
+    period: "Jan 2026 – May 2026",
+    branch: "feature/streak-decay",
+    tech: [
+      "MongoDB",
+      "Express.js",
+      "React",
+      "Node.js",
+      "JWT",
+      "Tailwind",
+      "Recharts",
+    ],
+    bullets: [
+      "Architected a two-layer system (Intent vs Evidence) supporting 2 tracking modes to separate planned tasks from verified outcomes.",
+      "Designed a confidence scoring model improving data reliability via proof-based prioritization.",
+      "Implemented streak decay and insights analyzing 7-day activity patterns to boost consistency.",
+    ],
+    stat: { label: "tracking modes", value: "2" },
+    accent: "var(--bg2)",
   },
 ];
 
@@ -36,93 +68,385 @@ function TiltCard({ children, style }) {
   const onMove = (e) => {
     const el = e.currentTarget;
     const r = el.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width - 0.5) * 12;
-    const y = ((e.clientY - r.top) / r.height - 0.5) * -12;
-    el.style.transform = `perspective(700px) rotateX(${y}deg) rotateY(${x}deg) translateZ(8px)`;
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 8;
+    const y = ((e.clientY - r.top) / r.height - 0.5) * -8;
+    el.style.transform = `perspective(900px) rotateX(${y}deg) rotateY(${x}deg)`;
   };
-  const onLeave = (e) => { e.currentTarget.style.transform = "perspective(700px) rotateX(0) rotateY(0) translateZ(0)"; };
+  const onLeave = (e) => {
+    e.currentTarget.style.transform =
+      "perspective(900px) rotateX(0) rotateY(0)";
+  };
   return (
-    <div onMouseMove={onMove} onMouseLeave={onLeave}
-      style={{ transition: "transform 0.18s ease", willChange: "transform", ...style }}>
+    <div
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{
+        transition: "transform 0.18s ease",
+        willChange: "transform",
+        ...style,
+      }}
+    >
       {children}
     </div>
   );
 }
 
+function CommitHash(seed) {
+  // stable pseudo-hash purely for the git-log aesthetic
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
+  return h.toString(16).slice(0, 7);
+}
+
 export default function Projects() {
-  const [hovered, setHovered] = useState(null);
+  const [open, setOpen] = useState(0);
 
   return (
-    <div style={{ padding: "60px 24px 100px", maxWidth: 1100, margin: "0 auto" }}>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ marginBottom: 64 }}>
-        <p style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--accent)", marginBottom: 12 }}>// selected work</p>
-        <h1 style={{ fontSize: "clamp(40px,7vw,80px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1 }}>
+    <div
+      style={{ padding: "60px 24px 100px", maxWidth: 1100, margin: "0 auto" }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        style={{ marginBottom: 40 }}
+      >
+        <p
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: 12,
+            color: "var(--accent)",
+            marginBottom: 12,
+          }}
+        >
+          // selected work
+        </p>
+        <h1
+          style={{
+            fontSize: "clamp(40px,7vw,80px)",
+            fontWeight: 800,
+            letterSpacing: "-0.03em",
+            lineHeight: 1,
+          }}
+        >
           Projects
         </h1>
       </motion.div>
 
-      {/* Project list */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {projects.map((p, i) => (
-          <motion.div key={i}
-            initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}>
-            <TiltCard style={{
-              background: hovered === i ? "var(--bg2)" : "var(--surface)",
-              border: `1px solid ${p.highlight ? "rgba(232,90,79,0.2)" : "var(--border)"}`,
-              borderRadius: 16,
-            }}>
+      {/* git log window */}
+      <div
+        style={{
+          border: "1px solid var(--border)",
+          borderRadius: 12,
+          overflow: "hidden",
+          background: "var(--surface)",
+          boxShadow: "0 12px 40px rgba(20,26,43,0.06)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "10px 14px",
+            borderBottom: "1px solid var(--border)",
+            background: "var(--bg2)",
+          }}
+        >
+          <span
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: "50%",
+              background: "#E85A4F",
+            }}
+          />
+          <span
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: "50%",
+              background: "#E8A93B",
+            }}
+          />
+          <span
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: "50%",
+              background: "#2B4EE6",
+            }}
+          />
+          <span
+            style={{
+              marginLeft: 10,
+              fontFamily: "var(--font-mono)",
+              fontSize: 11,
+              color: "var(--muted)",
+            }}
+          >
+            mradul-patle — git log --oneline --graph
+          </span>
+        </div>
+
+        <div style={{ padding: "8px 0" }}>
+          {projects.map((p, i) => {
+            const isOpen = open === i;
+            return (
               <div
-                onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered(null)}
-                style={{ padding: "32px 36px", cursor: "default" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16, marginBottom: 16 }}>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--accent)", opacity: 0.5 }}>{p.num}</span>
-                    <h2 style={{ fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 800, letterSpacing: "-0.02em" }}>{p.name}</h2>
-                    {p.highlight && (
-                      <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 100, background: "rgba(232,90,79,0.1)", color: "var(--accent2)", border: "1px solid rgba(232,90,79,0.2)", fontFamily: "var(--font-mono)" }}>
-                        featured
-                      </span>
-                    )}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--muted)" }}>{p.year}</span>
-                    <span className="tag">{p.category}</span>
-                    <a href={p.link} target="_blank" rel="noopener noreferrer" data-hover
+                key={p.name}
+                style={{
+                  borderBottom:
+                    i < projects.length - 1
+                      ? "1px solid var(--border)"
+                      : "none",
+                }}
+              >
+                {/* Commit row / header */}
+                <button
+                  onClick={() => setOpen(isOpen ? -1 : i)}
+                  data-hover
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    border: "none",
+                    cursor: "pointer",
+                    background: isOpen ? "var(--bg2)" : "transparent",
+                    padding: "18px 22px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 16,
+                    flexWrap: "wrap",
+                    transition: "background 0.2s",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 12,
+                      color: "var(--accent3)",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {CommitHash(p.name)}
+                  </span>
+
+                  <span
+                    style={{
+                      fontSize: "clamp(18px,2.6vw,26px)",
+                      fontWeight: 800,
+                      letterSpacing: "-0.01em",
+                      color: "var(--text)",
+                    }}
+                  >
+                    {p.name}
+                  </span>
+
+                  <span
+                    style={{
+                      fontSize: 13,
+                      color: "var(--muted)",
+                      flex: 1,
+                      minWidth: 140,
+                    }}
+                  >
+                    {p.tagline}
+                  </span>
+
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 11,
+                      color: "var(--muted)",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {p.period}
+                  </span>
+
+                  {p.link && (
+                    <a
+                      href={p.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-hover
+                      onClick={(e) => e.stopPropagation()}
                       style={{
-                        width: 36, height: 36, borderRadius: 8,
+                        width: 30,
+                        height: 30,
+                        borderRadius: 7,
+                        flexShrink: 0,
                         border: "1px solid var(--border-hover)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        color: "var(--muted)", textDecoration: "none", fontSize: 16,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "var(--muted)",
+                        textDecoration: "none",
+                        fontSize: 15,
                         transition: "all 0.2s",
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "var(--bg)"; e.currentTarget.style.borderColor = "var(--accent)"; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--muted)"; e.currentTarget.style.borderColor = "var(--border-hover)"; }}
-                    >↗</a>
-                  </div>
-                </div>
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "var(--accent)";
+                        e.currentTarget.style.color = "var(--bg)";
+                        e.currentTarget.style.borderColor = "var(--accent)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent";
+                        e.currentTarget.style.color = "var(--muted)";
+                        e.currentTarget.style.borderColor =
+                          "var(--border-hover)";
+                      }}
+                    >
+                      ↗
+                    </a>
+                  )}
 
-                <p style={{ fontSize: 15, color: "var(--muted)", lineHeight: 1.7, maxWidth: 680, marginBottom: 20 }}>{p.description}</p>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 90 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      color: "var(--accent2)",
+                      fontSize: 14,
+                      flexShrink: 0,
+                    }}
+                  >
+                    ›
+                  </motion.span>
+                </button>
 
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  {p.tech.map((t, j) => <span key={j} className="tag">{t}</span>)}
-                </div>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      style={{ overflow: "hidden" }}
+                    >
+                      <div
+                        style={{
+                          padding: "4px 22px 26px 22px",
+                          display: "grid",
+                          gridTemplateColumns: "1fr auto",
+                          gap: 24,
+                        }}
+                        className="proj-detail-grid"
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: 11,
+                              color: "var(--muted)",
+                              marginBottom: 12,
+                              opacity: 0.8,
+                            }}
+                          >
+                            branch:{" "}
+                            <span style={{ color: "var(--accent)" }}>
+                              {p.branch}
+                            </span>
+                          </div>
+                          {p.bullets.map((b, j) => (
+                            <motion.div
+                              key={j}
+                              initial={{ opacity: 0, x: -8 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: j * 0.06 }}
+                              style={{
+                                display: "flex",
+                                gap: 10,
+                                marginBottom: 10,
+                                alignItems: "flex-start",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontFamily: "var(--font-mono)",
+                                  color: "#2f9e63",
+                                  fontSize: 13,
+                                  lineHeight: 1.6,
+                                  flexShrink: 0,
+                                }}
+                              >
+                                +
+                              </span>
+                              <span
+                                style={{
+                                  fontSize: 14,
+                                  color: "var(--muted)",
+                                  lineHeight: 1.65,
+                                }}
+                              >
+                                {b}
+                              </span>
+                            </motion.div>
+                          ))}
+
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: 6,
+                              flexWrap: "wrap",
+                              marginTop: 16,
+                            }}
+                          >
+                            {p.tech.map((t, j) => (
+                              <span key={j} className="tag">
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            </TiltCard>
-          </motion.div>
-        ))}
+            );
+          })}
+        </div>
       </div>
 
       {/* More coming soon */}
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-        style={{ marginTop: 48, textAlign: "center", padding: "32px", border: "1px dashed var(--border)", borderRadius: 16 }}>
-        <p style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--muted)" }}>
-          // more projects on{" "}
-          <a href="https://github.com/mradulpatle03" target="_blank" rel="noopener noreferrer" data-hover
-            style={{ color: "var(--accent)", textDecoration: "none" }}>GitHub ↗</a>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        style={{
+          marginTop: 32,
+          textAlign: "center",
+          padding: "28px",
+          border: "1px dashed var(--border)",
+          borderRadius: 16,
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: 13,
+            color: "var(--muted)",
+          }}
+        >
+          // more commits on{" "}
+          <a
+            href="https://github.com/mradulpatle03"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-hover
+            style={{ color: "var(--accent)", textDecoration: "none" }}
+          >
+            GitHub ↗
+          </a>
         </p>
       </motion.div>
+
+      <style>{`
+        @media (max-width: 640px) {
+          .proj-detail-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }

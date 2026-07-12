@@ -1,32 +1,42 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-const ROLES = ["Full-Stack Developer", "MERN Engineer", "DSA Problem Solver", "Open Source Contributor"];
-const MARQUEE_ITEMS = ["React", "Node.js", "MongoDB", "Express", "TypeScript", "Socket.IO", "Tailwind", "JWT", "REST APIs", "Redux", "Zustand", "Git"];
+const ROLES = ["WebDevLead", "FullStackEngineer", "CompetitiveProgrammer", "SystemDesigner"];
+const MARQUEE_ITEMS = ["React", "Node.js", "MongoDB", "Express", "TypeScript", "Socket.IO", "Redis", "BullMQ", "Tailwind", "Groq LLM", "JWT", "Git"];
 
-function TypingRole() {
+const EXPERIENCE = [
+  { role: "Web Development Lead", org: "Google Developers Group, IIIT Bhopal", period: "Oct 2025 — Present", current: true },
+  { role: "Web Development Intern", org: "Explified", period: "May 2025 — Aug 2025" },
+  { role: "Teaching Assistant", org: "IIIT Bhopal", period: "Jul 2024 — Jan 2025" },
+];
+
+function RoleSwitcher() {
   const [idx, setIdx] = useState(0);
-  const [displayed, setDisplayed] = useState("");
-  const [deleting, setDeleting] = useState(false);
-  const [wait, setWait] = useState(false);
-
   useEffect(() => {
-    const target = ROLES[idx];
-    if (wait) { const t = setTimeout(() => setWait(false), 1200); return () => clearTimeout(t); }
-    if (!deleting && displayed === target) { setWait(true); setDeleting(true); return; }
-    if (deleting && displayed === "") { setDeleting(false); setIdx(i => (i + 1) % ROLES.length); return; }
-    const speed = deleting ? 40 : 70;
-    const t = setTimeout(() => {
-      setDisplayed(d => deleting ? d.slice(0, -1) : target.slice(0, d.length + 1));
-    }, speed);
-    return () => clearTimeout(t);
-  }, [displayed, deleting, idx, wait]);
+    const t = setInterval(() => setIdx(i => (i + 1) % ROLES.length), 2600);
+    return () => clearInterval(t);
+  }, []);
 
   return (
-    <span style={{ color: "var(--accent2)", fontFamily: "var(--font-mono)", fontSize: "clamp(16px,2.6vw,22px)", fontWeight: 600 }}>
-      {displayed}<span style={{ animation: "blink 1s steps(1) infinite", display: "inline-block", width: 2, height: "1em", background: "var(--accent2)", verticalAlign: "middle", marginLeft: 2 }} />
-    </span>
+    <div style={{ display: "inline-flex", alignItems: "center", fontFamily: "var(--font-mono)", fontSize: "clamp(14px,2.2vw,19px)", fontWeight: 600 }}>
+      <span style={{ color: "var(--muted)" }}>&lt;</span>
+      <span style={{ position: "relative", height: "1.5em", overflow: "hidden", display: "inline-block", padding: "0 6px" }}>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={idx}
+            initial={{ y: 22, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -22, opacity: 0 }}
+            transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            style={{ display: "inline-block", color: "var(--accent2)", whiteSpace: "nowrap" }}
+          >
+            {ROLES[idx]}
+          </motion.span>
+        </AnimatePresence>
+      </span>
+      <span style={{ color: "var(--muted)" }}>/&gt;</span>
+    </div>
   );
 }
 
@@ -47,6 +57,95 @@ function TiltCard({ children, style }) {
   );
 }
 
+const WHOAMI_LINES = [
+  { k: "name", v: "Mradul Patle" },
+  { k: "role", v: "Web Dev Lead, GDG IIIT Bhopal" },
+  { k: "education", v: "B.Tech CS · IIIT Bhopal · 9.65 CGPA" },
+  { k: "stack", v: "[React, Node.js, MongoDB, Redis, Socket.io]" },
+  { k: "leetcode", v: "1000+ solved · Knight · rating 1974" },
+  { k: "status", v: "open_to_work = true" },
+];
+
+function WhoamiTerminal() {
+  const [lineIdx, setLineIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [bootDone, setBootDone] = useState(false);
+  const [showCmd, setShowCmd] = useState(false);
+
+  const cmd = "whoami --verbose";
+
+  useEffect(() => {
+    if (!showCmd) {
+      if (charIdx < cmd.length) {
+        const t = setTimeout(() => setCharIdx(c => c + 1), 55);
+        return () => clearTimeout(t);
+      }
+      const t = setTimeout(() => { setShowCmd(true); setCharIdx(0); }, 350);
+      return () => clearTimeout(t);
+    }
+    if (lineIdx >= WHOAMI_LINES.length) { setBootDone(true); return; }
+    const full = `${WHOAMI_LINES[lineIdx].k}: ${WHOAMI_LINES[lineIdx].v}`;
+    if (charIdx < full.length) {
+      const t = setTimeout(() => setCharIdx(c => c + 1), 14);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => { setLineIdx(l => l + 1); setCharIdx(0); }, 220);
+    return () => clearTimeout(t);
+  }, [charIdx, lineIdx, showCmd]);
+
+  const renderLine = (line, typedLen) => {
+    const full = `${line.k}: ${line.v}`;
+    const shown = full.slice(0, typedLen);
+    const keyDone = shown.length >= line.k.length + 1;
+    return (
+      <div style={{ display: "flex", gap: 6 }}>
+        <span style={{ color: "#E8A93B" }}>&gt;</span>
+        <span>
+          <span style={{ color: "#F2789F" }}>{shown.slice(0, Math.min(shown.length, line.k.length))}</span>
+          {keyDone && <span style={{ color: "#8B90A3" }}>{shown.slice(line.k.length, line.k.length + 1)}</span>}
+          {keyDone && <span style={{ color: "#EDE8D6" }}>{shown.slice(line.k.length + 1)}</span>}
+        </span>
+      </div>
+    );
+  };
+
+  return (
+    <div style={{
+      background: "#141A2B", borderRadius: 12, border: "2px solid var(--text)",
+      overflow: "hidden", width: "100%", maxWidth: 460,
+      boxShadow: "8px 8px 0 var(--accent2)",
+      fontFamily: "var(--font-mono)", fontSize: 13, lineHeight: 1.9,
+    }}>
+      {/* title bar */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", background: "#1D2438", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#E85A4F" }} />
+        <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#E8A93B" }} />
+        <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#2f9e63" }} />
+        <span style={{ marginLeft: 8, fontSize: 11, color: "#8B90A3" }}>mradul@iiitb: ~</span>
+      </div>
+      <div style={{ padding: "18px 18px 22px" }}>
+        <div style={{ display: "flex", gap: 6, marginBottom: 10, color: "#EDE8D6" }}>
+          <span style={{ color: "#2f9e63" }}>$</span>
+          <span>{showCmd ? cmd : cmd.slice(0, charIdx)}</span>
+          {!showCmd && <span style={{ animation: "blink 1s steps(1) infinite", display: "inline-block", width: 7, height: 15, background: "#EDE8D6" }} />}
+        </div>
+        <div style={{ color: "#EDE8D6" }}>
+          {WHOAMI_LINES.slice(0, lineIdx).map((l, i) => (
+            <div key={i}>{renderLine(l, `${l.k}: ${l.v}`.length)}</div>
+          ))}
+          {showCmd && lineIdx < WHOAMI_LINES.length && renderLine(WHOAMI_LINES[lineIdx], charIdx)}
+        </div>
+        {bootDone && (
+          <div style={{ display: "flex", gap: 6, marginTop: 10, color: "#EDE8D6" }}>
+            <span style={{ color: "#2f9e63" }}>$</span>
+            <span style={{ animation: "blink 1s steps(1) infinite", display: "inline-block", width: 7, height: 15, background: "#EDE8D6" }} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const navigate = useNavigate();
 
@@ -59,75 +158,86 @@ export default function Home() {
   return (
     <div>
       {/* HERO */}
-      <section style={{ minHeight: "calc(100vh - 68px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 24px", position: "relative", overflow: "hidden" }}>
+      <section style={{ minHeight: "calc(100vh - 68px)", display: "flex", alignItems: "center", padding: "80px 24px", position: "relative", overflow: "hidden" }}>
 
         <div style={{ position: "absolute", top: "18%", left: "6%", width: 260, height: 260, borderRadius: "50%", background: "rgba(43,78,230,0.07)", filter: "blur(70px)", animation: "glow-pulse 4s ease-in-out infinite", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "12%", right: "8%", width: 220, height: 220, borderRadius: "50%", background: "rgba(232,169,59,0.10)", filter: "blur(60px)", animation: "glow-pulse 6s ease-in-out infinite 2s", pointerEvents: "none" }} />
 
-        <motion.div variants={containerVariants} initial="hidden" animate="visible"
-          style={{ maxWidth: 860, width: "100%", textAlign: "center" }}>
+        <div className="hero-grid" style={{ maxWidth: 1200, width: "100%", margin: "0 auto", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 56, alignItems: "center", position: "relative", zIndex: 1 }}>
 
-          <motion.h1 variants={itemVariants} style={{
-            fontSize: "clamp(44px, 7.5vw, 92px)", fontWeight: 800, lineHeight: 0.98,
-            letterSpacing: "-0.03em", marginBottom: 20,
-            fontFamily: "var(--font-sans)", color: "var(--text)",
-          }}>
-            Mradul <span style={{ color: "var(--accent2)" }}>Patle</span>
-          </motion.h1>
+          <motion.div variants={containerVariants} initial="hidden" animate="visible">
 
-          <motion.div variants={itemVariants} style={{ marginBottom: 28, height: 32, display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <TypingRole />
-          </motion.div>
-
-          <motion.p variants={itemVariants} style={{
-            fontSize: 17, color: "var(--muted)", lineHeight: 1.7,
-            maxWidth: 560, margin: "0 auto 40px",
-          }}>
-            CS student at <span style={{ color: "var(--text)", fontWeight: 600 }}>IIIT Bhopal</span> · 9.79 CGPA · 500+ DSA problems · building fast, real-world MERN apps.
-          </motion.p>
-
-          <motion.div variants={itemVariants} style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 64 }}>
-            <motion.button onClick={() => navigate("/projects")} data-hover
-              whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-              style={{
-                padding: "13px 28px", borderRadius: 6, border: "2px solid var(--text)",
-                background: "var(--accent)", color: "var(--bg)",
-                fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", cursor: "pointer",
+            <motion.div variants={itemVariants} style={{ marginBottom: 20 }}>
+              <div style={{
+                display: "inline-flex", borderRadius: 4, overflow: "hidden",
+                border: "1px solid var(--text)", fontFamily: "var(--font-mono)",
+                fontSize: 10.5, fontWeight: 700, letterSpacing: "0.04em",
               }}>
-              View Projects →
-            </motion.button>
-            <motion.button onClick={() => navigate("/contact")} data-hover
-              whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-              style={{
-                padding: "13px 28px", borderRadius: 6,
-                border: "2px solid var(--text)",
-                background: "transparent", color: "var(--text)",
-                fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", cursor: "pointer",
-              }}>
-              Contact Me
-            </motion.button>
-          </motion.div>
-
-          {/* Stats row */}
-          <motion.div variants={itemVariants}
-            style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", border: "2px solid var(--text)", borderRadius: 8, overflow: "hidden", maxWidth: 520, margin: "0 auto" }}>
-            {[
-              { n: "9.79", label: "CGPA" },
-              { n: "500+", label: "DSA Problems" },
-              { n: "4+", label: "Projects Shipped" },
-            ].map((s, i) => (
-              <div key={i} style={{
-                background: i === 1 ? "var(--accent2)" : "var(--bg2)",
-                color: i === 1 ? "var(--bg)" : "var(--text)",
-                padding: "20px 16px", textAlign: "center",
-                borderRight: i < 2 ? "2px solid var(--text)" : "none",
-              }}>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: 28, fontWeight: 800, letterSpacing: "-0.02em" }}>{s.n}</div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.06em", marginTop: 4, opacity: 0.85 }}>{s.label}</div>
+                <span style={{ padding: "5px 10px", background: "var(--text)", color: "var(--bg)" }}>STATUS</span>
+                <span style={{ padding: "5px 10px", background: "#2f9e63", color: "#fff" }}>OPEN TO WORK</span>
               </div>
-            ))}
+            </motion.div>
+
+            <motion.h1 variants={itemVariants} style={{
+              fontSize: "clamp(40px, 6.2vw, 76px)", fontWeight: 800, lineHeight: 0.98,
+              letterSpacing: "-0.03em", marginBottom: 20,
+              fontFamily: "var(--font-sans)", color: "var(--text)",
+            }}>
+              Mradul <span style={{ color: "var(--accent2)" }}>Patle</span>
+            </motion.h1>
+
+            <motion.div variants={itemVariants} style={{ marginBottom: 24, height: 32, display: "flex", alignItems: "center" }}>
+              <RoleSwitcher />
+            </motion.div>
+
+            <motion.p variants={itemVariants} style={{
+              fontSize: 17, color: "var(--muted)", lineHeight: 1.7,
+              maxWidth: 480, marginBottom: 36,
+            }}>
+              CS student at <span style={{ color: "var(--text)", fontWeight: 600 }}>IIIT Bhopal</span> · 9.65 CGPA · 1000+ DSA problems solved · Web Dev Lead @GDG.
+            </motion.p>
+
+            <motion.div variants={itemVariants} style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <motion.button onClick={() => navigate("/projects")} data-hover
+                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                style={{
+                  padding: "13px 28px", borderRadius: 6, border: "2px solid var(--text)",
+                  background: "var(--accent)", color: "var(--bg)",
+                  fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", cursor: "pointer",
+                }}>
+                View Projects →
+              </motion.button>
+              <motion.button onClick={() => navigate("/contact")} data-hover
+                whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                style={{
+                  padding: "13px 28px", borderRadius: 6,
+                  border: "2px solid var(--text)",
+                  background: "transparent", color: "var(--text)",
+                  fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.04em", cursor: "pointer",
+                }}>
+                Contact Me
+              </motion.button>
+            </motion.div>
           </motion.div>
-        </motion.div>
+
+          {/* Signature: live "whoami" terminal */}
+          <motion.div
+            initial={{ opacity: 0, x: 30, rotate: -2 }}
+            animate={{ opacity: 1, x: 0, rotate: -2 }}
+            transition={{ duration: 0.7, delay: 0.3, type: "spring", stiffness: 90 }}
+            className="hero-terminal"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <WhoamiTerminal />
+          </motion.div>
+        </div>
+
+        <style>{`
+          @media (max-width: 860px) {
+            .hero-grid { grid-template-columns: 1fr !important; text-align: left; }
+            .hero-terminal { margin-top: 12px; }
+          }
+        `}</style>
       </section>
 
       {/* MARQUEE TECH STACK */}
@@ -142,8 +252,38 @@ export default function Home() {
         </div>
       </div>
 
+      {/* EXPERIENCE STRIP */}
+      <section className="section" style={{ padding: "72px 24px 0", maxWidth: 1200, margin: "0 auto" }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
+          style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
+          <div>
+            <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--accent)", marginBottom: 8 }}>Currently</p>
+            <h2 style={{ fontFamily: "var(--font-sans)", fontSize: "clamp(26px, 4vw, 36px)", fontWeight: 800, letterSpacing: "-0.02em" }}>Experience</h2>
+          </div>
+          <motion.button onClick={() => navigate("/about")} data-hover
+            whileHover={{ x: 4 }}
+            style={{ background: "none", border: "none", color: "var(--muted)", fontSize: 13, fontFamily: "var(--font-mono)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            Full story →
+          </motion.button>
+        </motion.div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 1, background: "var(--border)", border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden" }}>
+          {EXPERIENCE.map((e, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}
+              style={{ background: "var(--surface)", padding: "24px 22px", position: "relative" }}>
+              {e.current && (
+                <span style={{ position: "absolute", top: 20, right: 20, fontSize: 10, fontFamily: "var(--font-mono)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#2f9e63" }}>● Active</span>
+              )}
+              <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 6, letterSpacing: "-0.01em", paddingRight: e.current ? 60 : 0 }}>{e.role}</div>
+              <div style={{ fontSize: 13, color: "var(--accent)", marginBottom: 10 }}>{e.org}</div>
+              <div style={{ fontSize: 12, color: "var(--muted)", fontFamily: "var(--font-mono)" }}>{e.period}</div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* FEATURED PROJECTS PREVIEW */}
-      <section className="section" style={{ padding: "100px 24px", maxWidth: 1200, margin: "0 auto" }}>
+      <section className="section" style={{ padding: "80px 24px 100px", maxWidth: 1200, margin: "0 auto" }}>
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 48, flexWrap: "wrap", gap: 16 }}>
             <div>
@@ -160,16 +300,16 @@ export default function Home() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16 }}>
           {[
-            { name: "Prep-Pilot", desc: "AI-powered coding interview prep with personalized roadmaps, DSA practice, and a browser IDE.", tech: ["MERN", "JWT", "AI API"], num: "01", link: "https://prep-pilot-front.onrender.com/", accent: "var(--accent2)" },
-            { name: "Shopkey", desc: "Full-stack e-commerce with auth, product management, and Stripe-powered secure checkout.", tech: ["MERN", "Stripe", "JWT"], num: "02", link: "https://shopkey-432.vercel.app", accent: "var(--bg2)" },
-            { name: "Chattt", desc: "Real-time 1-on-1 messaging with <200ms latency, online presence, and Zustand state.", tech: ["Socket.IO", "MERN", "Zustand"], num: "03", link: "https://fullstack-chatapp-e8lf.onrender.com", accent: "var(--bg2)" },
+            { name: "PlacementOS", desc: "Full-stack SaaS digitizing college placements: 5 roles, Smart Eligibility Engine, and a 9-stage Kanban recruitment pipeline with BullMQ.", tech: ["React", "Redis", "BullMQ", "Socket.io"], num: "01", link: "https://github.com/mradulpatle03/PlacementOS", accent: "var(--accent2)" },
+            { name: "HireFlow", desc: "AI hiring platform with explainable multi-dimensional resume scoring via Groq LLM, semantic job matching, and real-time recruiter chat.", tech: ["Groq LLM", "Socket.io", "MERN"], num: "02", link: "https://ai-hiring-platform-phi.vercel.app/", accent: "var(--bg2)" },
+            { name: "Habit-Forge", desc: "Two-layer habit tracker separating Intent from Evidence, with a confidence scoring model and 7-day streak decay insights.", tech: ["Recharts", "MERN", "JWT"], num: "03", link: "https://habitforge-sand.vercel.app/", accent: "var(--bg2)" },
           ].map((p, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}>
               <TiltCard style={{
                 background: p.accent, border: "2px solid var(--text)",
                 borderRadius: 10, padding: 28, height: "100%",
                 cursor: "pointer",
-                color: p.name === "Prep-Pilot" ? "var(--bg)" : "var(--text)",
+                color: p.name === "PlacementOS" ? "var(--bg)" : "var(--text)",
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
                   <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 700, opacity: 0.7 }}>{p.num}</span>
@@ -178,7 +318,7 @@ export default function Home() {
                   >↗</a>
                 </div>
                 <h3 style={{ fontFamily: "var(--font-sans)", fontSize: 22, fontWeight: 700, marginBottom: 10, letterSpacing: "-0.01em" }}>{p.name}</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.6, marginBottom: 20, opacity: p.name === "Prep-Pilot" ? 0.9 : 1, color: p.name === "Prep-Pilot" ? "var(--bg)" : "var(--muted)" }}>{p.desc}</p>
+                <p style={{ fontSize: 14, lineHeight: 1.6, marginBottom: 20, opacity: p.name === "PlacementOS" ? 0.9 : 1, color: p.name === "PlacementOS" ? "var(--bg)" : "var(--muted)" }}>{p.desc}</p>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {p.tech.map((t, j) => <span key={j} className="tag">{t}</span>)}
                 </div>

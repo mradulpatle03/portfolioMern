@@ -59,7 +59,7 @@ export default function Layout() {
                 data-hover
               >{item.label}</NavLink>
             ))}
-            <a href="https://drive.google.com/file/d/1oTJR8BzKcMBEjyKOJOliLON_hH-l-dWR/view?usp=sharing"
+            <a href="https://drive.google.com/file/d/1NSKAK7cZnB94_kFhbwBfcSTNol7UyI2y/view?usp=drivesdk"
               target="_blank" rel="noopener noreferrer" data-hover
               style={{
                 padding: "9px 18px", borderRadius: 100, fontSize: 11, fontWeight: 700,

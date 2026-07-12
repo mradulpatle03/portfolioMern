@@ -284,9 +284,9 @@ export default function LeetCode() {
   const isL = k => loading.has(k);
 
   const diffRows = solved ? [
-    { label: "Easy",   solved: solved.easySolved,   total: solved.totalEasy,   color: C.green, delay: 0   },
-    { label: "Medium", solved: solved.mediumSolved, total: solved.totalMedium, color: C.amber, delay: 100 },
-    { label: "Hard",   solved: solved.hardSolved,   total: solved.totalHard,   color: C.red,   delay: 200 },
+    { label: "Easy",   solved: solved.easySolved,   total: solved.totalEasy || 1000,   color: C.green, delay: 0   },
+    { label: "Medium", solved: solved.mediumSolved, total: solved.totalMedium || 2100, color: C.amber, delay: 100 },
+    { label: "Hard",   solved: solved.hardSolved,   total: solved.totalHard || 1000,   color: C.red,   delay: 200 },
   ] : null;
 
   const historyArr = Array.isArray(contestHistory)
