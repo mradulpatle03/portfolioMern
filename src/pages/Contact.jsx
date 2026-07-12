@@ -67,8 +67,8 @@ export default function Contact() {
               whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
               style={{
                 padding: "14px 28px", borderRadius: 8, border: "none",
-                background: loading ? "rgba(232,255,71,0.5)" : "var(--accent)",
-                color: "#0a0a0a", fontFamily: "var(--font-sans)", fontSize: 14,
+                background: loading ? "rgba(43,78,230,0.5)" : "var(--accent)",
+                color: "var(--bg)", fontFamily: "var(--font-sans)", fontSize: 14,
                 fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
               }}>
@@ -95,7 +95,7 @@ export default function Contact() {
                 border: "1px solid var(--border)", background: "var(--surface)",
                 textDecoration: "none", transition: "border-color 0.2s, background 0.2s",
               }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-hover)"; e.currentTarget.style.background = "#1a1a1a"; }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-hover)"; e.currentTarget.style.background = "var(--bg2)"; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.background = "var(--surface)"; }}
             >
               <span style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--muted)" }}>{c.label}</span>
@@ -104,9 +104,8 @@ export default function Contact() {
           ))}
 
           {/* Availability badge */}
-          <div style={{ marginTop: 16, padding: "16px 20px", borderRadius: 10, border: "1px solid rgba(232,255,71,0.15)", background: "rgba(232,255,71,0.04)" }}>
+          <div style={{ marginTop: 16, padding: "16px 20px", borderRadius: 10, border: "1px solid rgba(232,90,79,0.15)", background: "rgba(232,90,79,0.04)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 8px var(--accent)", animation: "glow-pulse 2s infinite", flexShrink: 0 }} />
               <span style={{ fontSize: 13, color: "var(--text)", fontWeight: 600 }}>Currently available</span>
             </div>
             <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 6, fontFamily: "var(--font-mono)" }}>for internships & freelance work</p>

@@ -68,8 +68,8 @@ export default function Projects() {
             initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}>
             <TiltCard style={{
-              background: hovered === i ? "#161616" : "var(--surface)",
-              border: `1px solid ${p.highlight ? "rgba(232,255,71,0.2)" : "var(--border)"}`,
+              background: hovered === i ? "var(--bg2)" : "var(--surface)",
+              border: `1px solid ${p.highlight ? "rgba(232,90,79,0.2)" : "var(--border)"}`,
               borderRadius: 16,
             }}>
               <div
@@ -81,7 +81,7 @@ export default function Projects() {
                     <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--accent)", opacity: 0.5 }}>{p.num}</span>
                     <h2 style={{ fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 800, letterSpacing: "-0.02em" }}>{p.name}</h2>
                     {p.highlight && (
-                      <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 100, background: "rgba(232,255,71,0.1)", color: "var(--accent)", border: "1px solid rgba(232,255,71,0.2)", fontFamily: "var(--font-mono)" }}>
+                      <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 100, background: "rgba(232,90,79,0.1)", color: "var(--accent2)", border: "1px solid rgba(232,90,79,0.2)", fontFamily: "var(--font-mono)" }}>
                         featured
                       </span>
                     )}
@@ -97,7 +97,7 @@ export default function Projects() {
                         color: "var(--muted)", textDecoration: "none", fontSize: 16,
                         transition: "all 0.2s",
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "#0a0a0a"; e.currentTarget.style.borderColor = "var(--accent)"; }}
+                      onMouseEnter={e => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "var(--bg)"; e.currentTarget.style.borderColor = "var(--accent)"; }}
                       onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--muted)"; e.currentTarget.style.borderColor = "var(--border-hover)"; }}
                     >↗</a>
                   </div>

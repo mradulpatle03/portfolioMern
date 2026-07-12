@@ -41,7 +41,7 @@ export default function About() {
           <div style={{ width: 200, height: 200, borderRadius: 16, overflow: "hidden", border: "1px solid var(--border)" }}>
             <img src="/mradul.png" alt="Mradul Patle" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
-          <div style={{ position: "absolute", inset: -8, borderRadius: 24, border: "1px solid rgba(232,255,71,0.15)", zIndex: -1 }} />
+          <div style={{ position: "absolute", inset: -8, borderRadius: 24, border: "1px solid rgba(232,90,79,0.15)", zIndex: -1 }} />
         </div>
       </motion.div>
 

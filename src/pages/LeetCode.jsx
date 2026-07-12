@@ -10,20 +10,20 @@ import {
 const BASE = "https://alfa-leetcode-api.onrender.com";
 const USERNAME = "mradulpatle";
 
-// ─── Palette (mirrors portfolio exactly) ────────────────────────────────────
+// ─── Palette (mapped to the site's cream/editorial theme variables) ────────
 const C = {
-  gold:   "#F5CB5C",
-  text:   "#E8EDDF",
-  muted:  "#CFDBD5",
-  bg1:    "#111111",
-  bg2:    "#1a1a1a",
-  card:   "rgba(17,17,17,0.55)",
-  border: "rgba(207,219,213,0.18)",
+  gold:   "#E8A93B", // var(--accent3)
+  text:   "#141A2B", // var(--text)
+  muted:  "#5D5A4E", // var(--muted)
+  bg1:    "#F2EEE1", // var(--bg)
+  bg2:    "#EDE8D6", // var(--bg2)
+  card:   "rgba(232,224,201,0.55)", // var(--surface) translucent
+  border: "rgba(20,26,43,0.18)",    // var(--border)
   purple: "#a78bfa",
-  green:  "#34d399",
-  amber:  "#f59e0b",
-  red:    "#f87171",
-  blue:   "#60a5fa",
+  green:  "#2f9e63",
+  amber:  "#c8830a",
+  red:    "#d1453d",
+  blue:   "#2B4EE6", // var(--accent)
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -110,7 +110,7 @@ function AnimBar({ pct, color, delay = 0 }) {
   const [w, setW] = useState(0);
   useEffect(() => { const t = setTimeout(() => setW(pct), 350 + delay); return () => clearTimeout(t); }, [pct, delay]);
   return (
-    <div style={{ height: 8, borderRadius: 99, background: "rgba(207,219,213,0.1)", overflow: "hidden" }}>
+    <div style={{ height: 8, borderRadius: 99, background: "rgba(20,26,43,0.08)", overflow: "hidden" }}>
       <div style={{ height: "100%", borderRadius: 99, background: color, width: `${w}%`, transition: "width 1.1s ease" }} />
     </div>
   );
@@ -143,8 +143,8 @@ function ErrBox({ msg }) {
   return (
     <div style={{
       borderRadius: 10, padding: 18, textAlign: "center",
-      color: "#f87171cc", fontSize: 13,
-      border: "1px solid rgba(248,113,113,0.2)", background: "rgba(248,113,113,0.04)",
+      color: "#c0392bcc", fontSize: 13,
+      border: "1px solid rgba(192,57,43,0.2)", background: "rgba(192,57,43,0.04)",
     }}>{msg}</div>
   );
 }
@@ -187,7 +187,7 @@ function Heatmap({ raw }) {
   const total = entries.reduce((s, e) => s + e.count, 0);
 
   function cellColor(count) {
-    if (!count) return "rgba(255,255,255,0.06)";
+    if (!count) return "rgba(20,26,43,0.06)";
     const t = Math.min(count / maxCount, 1);
     if (t < 0.25) return `${C.gold}40`;
     if (t < 0.5)  return `${C.gold}7a`;
@@ -322,11 +322,11 @@ export default function LeetCode() {
     <section style={{ position: "relative", padding: "112px 24px 64px", color: C.text, minHeight: "100vh" }}>
       <style>{`@keyframes lc-pulse { 0%,100%{opacity:1} 50%{opacity:.4} }`}</style>
 
-      {/* Radial bg — identical to rest of portfolio */}
+      {/* Radial bg — aligned with the rest of the portfolio's mesh-bg */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
-        background: `radial-gradient(80% 60% at 10% 10%, rgba(99,102,241,0.18), transparent),
-                     radial-gradient(50% 40% at 90% 20%, rgba(236,72,153,0.16), transparent)`,
+        background: `radial-gradient(80% 60% at 10% 10%, rgba(43,78,230,0.07), transparent),
+                     radial-gradient(50% 40% at 90% 20%, rgba(232,169,59,0.10), transparent)`,
       }} />
 
       <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 10 }}>
@@ -335,10 +335,10 @@ export default function LeetCode() {
         <motion.div {...fadeUp(0)} style={{ marginBottom: 40 }}>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
             <div>
-              <p style={{ fontSize: 12, color: C.gold, fontFamily: "monospace", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8, margin: "0 0 8px" }}>
+              <p style={{ fontSize: 12, color: C.gold, fontFamily: "var(--font-mono)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8, margin: "0 0 8px" }}>
                 Competitive Programming
               </p>
-              <h1 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 800, color: C.gold, margin: "0 0 12px", lineHeight: 1.1 }}>
+              <h1 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 800, color: C.text, margin: "0 0 12px", lineHeight: 1.1 }}>
                 LeetCode Journey
               </h1>
               <p style={{ color: `${C.muted}cc`, fontSize: 16, maxWidth: 560, margin: 0 }}>
@@ -496,7 +496,7 @@ export default function LeetCode() {
                         style={{
                           flex: 1, borderRadius: "3px 3px 0 0",
                           height: `${Math.max(pct, 8)}%`,
-                          background: isLast ? C.gold : `rgba(245,203,92,${0.15 + (pct / 100) * 0.65})`,
+                          background: isLast ? C.gold : `rgba(232,169,59,${0.15 + (pct / 100) * 0.65})`,
                           cursor: "pointer", transition: "opacity 0.2s",
                         }}
                         onMouseEnter={e => e.currentTarget.style.opacity = "0.65"}
@@ -612,8 +612,8 @@ export default function LeetCode() {
               fontSize: 14, fontWeight: 700, textDecoration: "none",
               boxShadow: `0 8px 32px ${C.gold}30`, transition: "background 0.2s, transform 0.2s",
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = C.text; e.currentTarget.style.transform = "scale(1.04)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = C.gold; e.currentTarget.style.transform = "scale(1)"; }}
+            onMouseEnter={e => { e.currentTarget.style.background = C.text; e.currentTarget.style.color = C.bg1; e.currentTarget.style.transform = "scale(1.04)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = C.gold; e.currentTarget.style.color = C.bg1; e.currentTarget.style.transform = "scale(1)"; }}
           >
             View Full LeetCode Profile <ExternalLink size={15} />
           </a>
